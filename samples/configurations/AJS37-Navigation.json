@@ -1,0 +1,28 @@
+{
+    "$schema": "../Schema/LayoutConfiguration.json.schema",
+
+    "syncAddress": "CharliesViggenDataPanel",
+    
+    "properties": {
+        "DATAPANEL_SELECTOR": {
+            "controlType": "MultiToggleExclusive",
+            "orientation": "Vertical",
+            "invertOrientation": true
+        },
+        "MASTER_VOL_UP": {
+            "biosProperty": "MASTER_VOL",
+            "ignoreSetState": true,
+            "fixedStepOverride": 100
+        },
+        "MASTER_VOL_DOWN": {
+            "biosProperty": "MASTER_VOL",
+            "ignoreSetState": true,
+            "fixedStepOverride": -10
+        },
+        "AJS37_DEST_INDICATOR_DATA_1": {
+            "reMap": {
+                "O": "LB"
+            }
+        }
+    }
+}

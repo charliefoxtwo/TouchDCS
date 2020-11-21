@@ -1,0 +1,59 @@
+﻿{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "#layoutConfig",
+    "title": "Layout Configuration",
+    "description": "Configuration for any OSC layout.",
+    "type": "object",
+    "definitions": {
+        "controlConfiguration": {
+            "$id": "#controlConfig",
+            "title": "Control Configuration",
+            "description": "All configuration pertaining to a control",
+            "properties": {
+                "biosProperty": {
+                    "description": "The DCS-BIOS property this control should map to. Only required if the dictionary key doesn't match the control.",
+                    "type": "string",
+                    "examples": ["DATAPANEL_SELECTOR", "AJS37_NAV_INDICATOR_DATA_6", "CK37_RENSA_CLEAR"]
+                },
+
+                "ignoreSetState": {
+                    "description": "Required when mapping single buttons to DCS-BIOS properties with the set_state capability (typically axes and rotaries).",
+                    "type": "boolean"
+                },
+
+                "fixedStepOverride": {
+                    "description": "Recommended when mapping single buttons to DCS-BIOS properties which may have more granular control. For example, set to 10 to increase value by 10 with each button press, or -100 to decrease value by 100 with each button press.",
+                    "type": "integer"
+                },
+
+                "reMap": {
+                    "description": "Some modules output characters that don't make any sense in place of stylized characters, to be handled by the font. Use this to remap those to text you find more sensible",
+                    "type": "object",
+                    "examples": [{ "O": "LB" }, { "A": "B", "C": "D"}]
+                }
+            }
+        }
+    },
+
+    "properties": {
+        "syncAddress": {
+            "description": "Use this property to let TouchDCS know what your active layout is. In order to allow for multiple layouts, TouchDCS will only process commands based on your current layout. You can set this to any control in your layout, though it's recommended to use a tab and provide a name that other layouts won't use.",
+            "type": "string",
+            "examples": [ "TangoWhiskeyHornetUFC", "JimsViggenNavPanel", "1337GamerSabreRadio" ]
+        },
+
+        "properties": {
+            "description": "Override properties. The dictionary key should match the OSC control name, without the leading slash. It's recommended to name your OSC controls the same as their DCS-BIOS counterparts, as then you won't need to customize the config for many of them.",
+            "type": "object",
+            "items": {
+                "$ref": "#controlConfig"
+            }
+        }
+    },
+
+    "additionalProperties": {
+        "$ref": "#controlConfig"
+    },
+
+    "required": ["syncAddress"]
+}

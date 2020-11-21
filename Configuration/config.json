@@ -1,0 +1,39 @@
+﻿{
+    "$schema": "Schema/ApplicationConfiguration.json.schema",
+    "logLevel": "INFO",
+    "commonModules": [
+        "CommonData",
+        "MetadataStart",
+        "MetadataEnd",
+        "NS430"
+    ],
+    "dcsBios": {
+        "configLocations": [
+            "%userprofile%/Saved Games/DCS.openbeta/Scripts/DCS-BIOS/doc/json/",
+            "%appdata%/DCS-BIOS/control-reference/json/"
+        ],
+
+        "export": {
+            "ipAddress": "239.255.50.10",
+            "sendPort": 7778,
+            "receivePort": 5010
+        }
+    },
+
+    "osc": {
+        "configLocations": ["D:/code/TouchDCS/samples/configurations/"],
+
+        "devices": [
+            {
+                "ipAddress": "192.168.50.21",
+                "sendPort": 9001,
+                "receivePort": 9000
+            },
+            {
+                "ipAddress": "192.168.50.86",
+                "sendPort": 9003,
+                "receivePort": 9002
+            }
+        ]
+    }
+}
