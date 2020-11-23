@@ -1,4 +1,11 @@
-﻿# Getting Started
+﻿# Features
+
+ - Build custom control panels to use on your phone or tablet
+ - Two-way communication with DCS-BIOS
+ - Multi-device support
+
+
+# Getting Started
 ### What you'll need:
 1. DCS-BIOS ([Original](https://github.com/dcs-bios/dcs-bios) or [Flightpanels fork](https://github.com/DCSFlightpanels/dcs-bios))
 2. [TouchOSC](https://hexler.net/products/touchosc) on your phone/tablet

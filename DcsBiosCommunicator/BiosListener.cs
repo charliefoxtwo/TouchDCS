@@ -91,7 +91,6 @@ namespace DcsBiosCommunicator
         {
             if (_integerActions.TryGetValue(address, out var handler))
             {
-                // Console.WriteLine($"{address:x4} :: got data :: {data:x4}");
                 _log.Trace($"{address:x4} -> got int data -> {data:x4}");
                 foreach (var mask in handler.MaskShifts)
                 {
@@ -102,7 +101,8 @@ namespace DcsBiosCommunicator
                     _biosTranslator.FromBios(mask.BiosCode, result);
                 }
             }
-            else if (_stringActions.TryGetValue(address, out var parser))
+            // some controls are registered to both strings and integers, because life is fun like that.
+            if (_stringActions.TryGetValue(address, out var parser))
             {
                 _log.Trace($"{address:x4} -> got string data -> {data:x4}");
                 var success = parser.TryGetValue(address, data, out var result);

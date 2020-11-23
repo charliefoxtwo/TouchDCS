@@ -283,7 +283,7 @@ namespace TouchDcs
                         ? oscControl.FixedStepOverride
                         : (int) floatData;
 
-                    resStr = Math.Sign(res) < 0 ? "DEC" : "INC";
+                    resStr = res < 0 ? InputFixedStep.Decrement : InputFixedStep.Increment;
                 }
                 else
                 {
@@ -313,10 +313,16 @@ namespace TouchDcs
                 var inputs = inputInfo.BiosData;
 
                 var setStateInput = inputs.OfType<InputSetState>().FirstOrDefault();
+                var fixedStepInput = inputs.OfType<InputFixedStep>().FirstOrDefault();
                 if (setStateInput != null)
                 {
                     _biosSender.SendAsync(BiosMessage(address,
                         setStateInput.MaxValue > 1 ? UnclampDataForBios(floatData, setStateInput.MaxValue) : floatData)).Wait();
+                }
+                else if (fixedStepInput != null)
+                {
+                    if (floatData == 0) return; // button release, don't do anything
+                    _biosSender.SendAsync(BiosMessage(address, floatData < 0 ? InputFixedStep.Decrement : InputFixedStep.Increment));
                 }
                 else
                 {
@@ -367,7 +373,7 @@ namespace TouchDcs
                     _log.Warn("New aircraft detected - identifying...");
                     _activeAircraft = null;
                     return;
-                };
+                }
 
                 if (!biosOutputInfos.TryGetValue(biosCode, out var aircraftOutputs))
                 {

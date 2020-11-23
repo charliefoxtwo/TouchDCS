@@ -6,14 +6,12 @@
     "type": "object",
     "definitions": {
         "endpoint": {
-            "$id": "#endpoint",
             "title": "Endpoint",
             "description": "A network endpoint.",
             "type": "object",
 
             "definitions": {
                 "ushort": {
-                    "$id": "#ushort",
                     "description": "An integer value between [1-65535]",
                     "type": "integer",
                     "minimum": 1,
@@ -28,11 +26,11 @@
                     "pattern": "^((25[0-5]|(2[0-4]|1[0-9]|[1-9]|)[0-9])(\\.(?!$)|$)){4}$"
                 },
                 "sendPort": {
-                    "$ref": "#ushort",
+                    "$ref": "#/definitions/endpoint/definitions/ushort",
                     "description": "The port to send on TODO: what is this actually?"
                 },
                 "receivePort": {
-                    "$ref": "#ushort",
+                    "$ref": "#/definitions/endpoint/definitions/ushort",
                     "description": "The port to receive from TODO: what is this actually?"
                 },
                 "additionalProperties": false
@@ -69,7 +67,7 @@
                     "type": "array",
                     "items": {
                         "description": "The network location of your TouchOSC client (typically your mobile device or tablet).",
-                        "$ref": "#endpoint"
+                        "$ref": "#/definitions/endpoint"
                     }
                 }
             },

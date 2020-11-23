@@ -6,7 +6,6 @@
     "type": "object",
     "definitions": {
         "controlConfiguration": {
-            "$id": "#controlConfig",
             "title": "Control Configuration",
             "description": "All configuration pertaining to a control",
             "properties": {
@@ -46,13 +45,9 @@
             "description": "Override properties. The dictionary key should match the OSC control name, without the leading slash. It's recommended to name your OSC controls the same as their DCS-BIOS counterparts, as then you won't need to customize the config for many of them.",
             "type": "object",
             "items": {
-                "$ref": "#controlConfig"
+                "$ref": "#/definitions/controlConfiguration"
             }
         }
-    },
-
-    "additionalProperties": {
-        "$ref": "#controlConfig"
     },
 
     "required": ["syncAddress"]
