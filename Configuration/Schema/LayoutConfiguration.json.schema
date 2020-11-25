@@ -8,6 +8,42 @@
         "controlConfiguration": {
             "title": "Control Configuration",
             "description": "All configuration pertaining to a control",
+
+            "definitions": {
+                "transform": {
+                    "title": "Integer Transformation",
+                    "description": "Transforms an integer from DCS-BIOS into another numeric value. Processed in the order multiply, divide, add, subtract",
+
+                    "properties": {
+                        "multiply": {
+                            "description": "Value to multiply by.",
+                            "type": "number",
+                            "default": 1
+                        },
+                        "divide": {
+                            "description": "Value to divide by.",
+                            "type": "number",
+                            "default": 1
+                        },
+                        "add": {
+                            "description": "Value to add by.",
+                            "type": "number",
+                            "default": 0
+                        },
+                        "subtract": {
+                            "description": "Value to subtract by.",
+                            "type": "number",
+                            "default": 0
+                        },
+                        "forceDecimalPlaces": {
+                            "description": "Forces the number to be rounded to and formatted with the specified number of decimal places.",
+                            "type": "integer",
+                            "default": 0
+                        }
+                    }
+                }
+            },
+
             "properties": {
                 "biosProperty": {
                     "description": "The DCS-BIOS property this control should map to. Only required if the dictionary key doesn't match the control.",
@@ -29,6 +65,10 @@
                     "description": "Some modules output characters that don't make any sense in place of stylized characters, to be handled by the font. Use this to remap those to text you find more sensible",
                     "type": "object",
                     "examples": [{ "O": "LB" }, { "A": "B", "C": "D"}]
+                },
+
+                "transform": {
+                    "$ref": "#/definitions/controlConfiguration/definitions/transform"
                 }
             }
         }

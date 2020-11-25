@@ -34,6 +34,8 @@ namespace Configuration
         /// Some modules output weird strings. Here, you can remap text from one string to another.
         /// </summary>
         public Dictionary<string, string>? ReMap { get; set; }
+
+        public IntegerTransform? Transform { get; set; }
     }
 
     public enum Orientation

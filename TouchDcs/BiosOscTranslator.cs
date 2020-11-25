@@ -407,7 +407,6 @@ namespace TouchDcs
                 switch (data)
                 {
                     case int i:
-                        // need ip address -> sync address
                         messages = GetValuesToSendFromBiosToOsc(biosCode, i, outputs, new SyncAddress(configuration.SyncAddress));
                         break;
                     case string s:
@@ -501,16 +500,37 @@ namespace TouchDcs
                 // in this case we can't really map a value to the control, so leave it?
                 if (oscControl.ControlType == ControlType.Button && biosOutput.MaxValue > 1) continue;
 
-                // TODO: complete these types?
-                yield return oscControl.ControlType switch
+                if (oscControl.ReMap is not null)
                 {
-                    // ControlType.Unknown => throw new NotImplementedException(),
-                    // ControlType.MultiToggle => throw new NotImplementedException(),
-                    ControlType.MultiToggleExclusive => GetMultiToggleOscCommand(oscControl, oscAddress, data, biosOutput.MaxValue),
-                    // ControlType.Button => throw new NotImplementedException(),
-                    // ControlType.Toggle => throw new NotImplementedException(),
-                    _ => GetOscCommand(oscAddress, biosOutput.MaxValue > 1 ? ClampDataForOsc(data, biosOutput.MaxValue) : data),
-                };
+                    if (!oscControl.ReMap.TryGetValue(data.ToString(), out var remapped)) continue;
+                    yield return GetOscCommand(oscAddress, remapped);
+                }
+                else if (oscControl.Transform is not null)
+                {
+                    var newValue = (double) data;
+                    newValue *= oscControl.Transform.Multiply ?? 1;
+                    newValue /= oscControl.Transform.Divide ?? 1;
+                    newValue += oscControl.Transform.Add ?? 0;
+                    newValue -= oscControl.Transform.Subtract ?? 0;
+                    var result = Math.Round(newValue, oscControl.Transform.ForceDecimalPlaces);
+                    yield return GetOscCommand(oscAddress,
+                        result.ToString($"F{oscControl.Transform.ForceDecimalPlaces}"));
+                }
+                else
+                {
+                    // TODO: complete these types?
+                    yield return oscControl.ControlType switch
+                    {
+                        // ControlType.Unknown => throw new NotImplementedException(),
+                        // ControlType.MultiToggle => throw new NotImplementedException(),
+                        ControlType.MultiToggleExclusive => GetMultiToggleOscCommand(oscControl, oscAddress, data,
+                            biosOutput.MaxValue),
+                        // ControlType.Button => throw new NotImplementedException(),
+                        // ControlType.Toggle => throw new NotImplementedException(),
+                        _ => GetOscCommand(oscAddress,
+                            biosOutput.MaxValue > 1 ? ClampDataForOsc(data, biosOutput.MaxValue) : data),
+                    };
+                }
             }
         }
 
