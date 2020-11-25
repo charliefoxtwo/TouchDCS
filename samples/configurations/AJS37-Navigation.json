@@ -21,7 +21,8 @@
         },
         "AJS37_DEST_INDICATOR_DATA_1": {
             "reMap": {
-                "O": "LB"
+                "O": "LB",
+                "F": "LF"
             }
         }
     }

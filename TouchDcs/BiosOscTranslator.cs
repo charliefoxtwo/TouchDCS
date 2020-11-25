@@ -357,7 +357,6 @@ namespace TouchDcs
                     if (!_guessedAircraft.Any())
                     {
                         _guessedAircraft = aircrafts;
-                        _guessedAircraft.Remove("NS430");
                         return;
                     }
 
@@ -370,7 +369,7 @@ namespace TouchDcs
 
                 if (!_allAircraftBiosOutputs.TryGetValue(_activeAircraft, out var biosOutputInfos))
                 {
-                    _log.Warn("New aircraft detected - identifying...");
+                    _log.Error($"Aircraft {_activeAircraft} not recognized.");
                     _activeAircraft = null;
                     return;
                 }
@@ -378,6 +377,8 @@ namespace TouchDcs
                 if (!biosOutputInfos.TryGetValue(biosCode, out var aircraftOutputs))
                 {
                     _log.Warn($"Aircraft {_activeAircraft} does not contain bios code {biosCode}.");
+                    _log.Info("Detecting new aircraft...");
+                    _activeAircraft = null;
                     return;
                 }
 
