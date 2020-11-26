@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Configuration
+namespace OscConfiguration
 {
     public class OscControl
     {

@@ -14,6 +14,7 @@
     <ItemGroup>
       <ProjectReference Include="..\DcsBiosCommunicator\DcsBiosCommunicator.csproj" />
       <ProjectReference Include="..\OscCommunicator\OscCommunicator.csproj" />
+      <ProjectReference Include="..\OscConfiguration\OscConfiguration.csproj" />
     </ItemGroup>
 
 </Project>

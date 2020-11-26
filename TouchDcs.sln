@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TouchDcs", "TouchDcs\TouchDcs.csproj", "{A12DF4B8-B36F-4AD3-9FCE-17D66ED4D023}"
 EndProject
@@ -11,6 +11,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{B6A4043D-28D3-4E51-BA2A-E5073DE976A2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OscCommunicator", "OscCommunicator\OscCommunicator.csproj", "{E116E757-FBB0-48D1-8AB2-CD0F0C98B2A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OscConfiguration", "OscConfiguration\OscConfiguration.csproj", "{3287E298-76D9-49F0-B2F5-B9D6ACBEEE79}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,5 +44,9 @@ Global
 		{E116E757-FBB0-48D1-8AB2-CD0F0C98B2A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E116E757-FBB0-48D1-8AB2-CD0F0C98B2A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E116E757-FBB0-48D1-8AB2-CD0F0C98B2A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3287E298-76D9-49F0-B2F5-B9D6ACBEEE79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3287E298-76D9-49F0-B2F5-B9D6ACBEEE79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3287E298-76D9-49F0-B2F5-B9D6ACBEEE79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3287E298-76D9-49F0-B2F5-B9D6ACBEEE79}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

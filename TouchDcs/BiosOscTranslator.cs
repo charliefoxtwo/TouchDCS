@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using BiosConfiguration;
-using Configuration;
 using Core;
 using Core.Logging;
 using DcsBiosCommunicator;
 using OscCommunicator;
+using OscConfiguration;
 
 namespace TouchDcs
 {

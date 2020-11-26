@@ -2,7 +2,7 @@
 using System.IO;
 using Newtonsoft.Json;
 
-namespace Configuration
+namespace OscConfiguration
 {
     /// <summary>
     /// Dictionary of OSC Address -> <see cref="OscControl"/>

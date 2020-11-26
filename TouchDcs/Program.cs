@@ -9,6 +9,7 @@ using Core;
 using Core.Logging;
 using DcsBiosCommunicator;
 using OscCommunicator;
+using OscConfiguration;
 
 namespace TouchDcs
 {

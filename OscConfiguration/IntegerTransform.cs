@@ -1,4 +1,4 @@
-﻿namespace Configuration
+﻿namespace OscConfiguration
 {
     public class IntegerTransform
     {
