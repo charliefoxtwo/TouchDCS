@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BiosConfiguration;
 using Configuration;
+using Core;
 using Core.Logging;
 using DcsBiosCommunicator;
 using OscCommunicator;
@@ -11,8 +12,6 @@ namespace TouchDcs
 {
     public class BiosOscTranslator : IBiosTranslator, IOscTranslator
     {
-        private const string BlankBiosCommand = "\n";
-
         // we'll keep track of our osc configurations here
         private readonly Dictionary<SyncAddress, AircraftOscConfiguration> _syncAddressToOscConfiguration =
             new();
@@ -35,7 +34,7 @@ namespace TouchDcs
         /// <summary>
         /// IP Address -> client
         /// </summary>
-        private readonly Dictionary<string, OscSendClient> _oscSenders;
+        private readonly Dictionary<string, ISendClient> _oscSenders;
 
         /// <summary>
         /// device ip -> loaded configuration
@@ -68,9 +67,9 @@ namespace TouchDcs
         /// </summary>
         private readonly Dictionary<string, HashSet<string>> _aircraftForBiosCommand = new();
 
-        private readonly IUdpSendClient _biosSender;
+        private readonly ISendClient _biosSender;
 
-        public BiosOscTranslator(in List<OscSendClient> oscSenders, in IUdpSendClient biosSender, IEnumerable<AircraftBiosConfiguration> biosConfigs,
+        public BiosOscTranslator(in List<ISendClient> oscSenders, in ISendClient biosSender, IEnumerable<AircraftBiosConfiguration> biosConfigs,
             IEnumerable<AircraftOscConfiguration> oscConfigs, in HashSet<string> nonAircraftModules, in ILogger logger)
         {
             _oscSenders = oscSenders.ToDictionary(s => s.DeviceIpAddress, s => s);
@@ -291,7 +290,7 @@ namespace TouchDcs
                     return;
                 }
 
-                _biosSender.SendAsync(BiosMessage(newAddress, resStr)).Wait();
+                _biosSender.Send(newAddress, resStr).Wait();
             }
             else
             {
@@ -316,24 +315,19 @@ namespace TouchDcs
                 var fixedStepInput = inputs.OfType<InputFixedStep>().FirstOrDefault();
                 if (setStateInput != null)
                 {
-                    _biosSender.SendAsync(BiosMessage(address,
-                        setStateInput.MaxValue > 1 ? UnclampDataForBios(floatData, setStateInput.MaxValue) : floatData)).Wait();
+                    _biosSender.Send(address,
+                        setStateInput.MaxValue > 1 ? UnclampDataForBios(floatData, setStateInput.MaxValue) : floatData).Wait();
                 }
                 else if (fixedStepInput != null)
                 {
                     if (floatData == 0) return; // button release, don't do anything
-                    _biosSender.SendAsync(BiosMessage(address, floatData < 0 ? InputFixedStep.Decrement : InputFixedStep.Increment));
+                    _biosSender.Send(address, floatData < 0 ? InputFixedStep.Decrement : InputFixedStep.Increment);
                 }
                 else
                 {
                     _log.Error($"input type {{set_state}} not found for control {address}");
                 }
             }
-        }
-
-        private static string BiosMessage(string biosAddress, object data)
-        {
-            return $"{biosAddress} {data}{BlankBiosCommand}";
         }
 
         private static int UnclampDataForBios(float data, int max)
@@ -418,7 +412,7 @@ namespace TouchDcs
 
                 foreach (var (address, sendData) in messages.Append(GetOscCommand($"{configuration.SyncAddress}_STATUS", 1)))
                 {
-                    sendClient.Send(address, sendData);
+                    sendClient.Send(address, sendData).Wait();
                 }
             }
         }

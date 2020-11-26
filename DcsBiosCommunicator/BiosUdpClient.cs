@@ -3,12 +3,17 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using Core;
 using Core.Logging;
 
 namespace DcsBiosCommunicator
 {
-    public class BiosUdpClient : IUdpReceiveClient, IUdpSendClient, IDisposable
+    public class BiosUdpClient : IUdpReceiveClient, ISendClient, IDisposable
     {
+        private const string BlankBiosCommand = "\n";
+
+        public string DeviceIpAddress { get; }
+
         private readonly UdpClient _client;
         private readonly IPAddress _ipAddress;
         private readonly IPEndPoint _target;
@@ -26,6 +31,7 @@ namespace DcsBiosCommunicator
             IPEndPoint localEndpoint = new (IPAddress.Any, receivePort);
 
             _target = new IPEndPoint(IPAddress.Broadcast, sendPort);
+            DeviceIpAddress = _target.Address.ToString();
 
             _client.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
 
@@ -37,11 +43,12 @@ namespace DcsBiosCommunicator
             return await _client.ReceiveAsync();
         }
 
-        public async Task<int> SendAsync(string message)
+        public async Task Send(string biosAddress, object data)
         {
+            var message = $"{biosAddress} {data}{BlankBiosCommand}";
             _log.Debug($"Sending {{{message.TrimEnd('\n')}}} to DCS-BIOS.");
             var byteData = Encoding.UTF8.GetBytes(message);
-            return await _client.SendAsync(byteData, byteData.Length, _target);
+            await _client.SendAsync(byteData, byteData.Length, _target);
         }
 
         public void OpenConnection()
@@ -64,11 +71,6 @@ namespace DcsBiosCommunicator
             Close();
             _client.Dispose();
         }
-    }
-
-    public interface IUdpSendClient
-    {
-        Task<int> SendAsync(string message);
     }
 
     public interface IUdpReceiveClient

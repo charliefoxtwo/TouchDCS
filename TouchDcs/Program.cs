@@ -88,7 +88,7 @@ namespace TouchDcs
             return receivers;
         }
 
-        private static IEnumerable<OscSendClient> SetUpOscSenders(ApplicationConfiguration appConfig)
+        private static IEnumerable<ISendClient> SetUpOscSenders(ApplicationConfiguration appConfig)
         {
             foreach (var sendClient in appConfig.Osc.Devices.Select(device =>
                 new OscSendClient(device.Ip, device.SendPort,

@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Net;
+using System.Threading.Tasks;
+using Core;
 using Core.Logging;
 using Rug.Osc;
 
 namespace OscCommunicator
 {
-    public class OscSendClient : IDisposable
+    public class OscSendClient : ISendClient, IDisposable
     {
         private readonly OscSender _sender;
         private readonly ILogger _log;
@@ -18,11 +20,12 @@ namespace OscCommunicator
             DeviceIpAddress = deviceIpAddress.ToString();
         }
 
-        public void Send(string address, object data)
+        public Task Send(string address, object data)
         {
             _log.Trace($"{address} -> sending data -> {data}");
             var message = new OscMessage(address, data);
             _sender.Send(message);
+            return Task.CompletedTask;
         }
 
         public void Connect()
