@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+
+        <IsPackable>false</IsPackable>
+
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Moq" Version="4.15.2" />
+        <PackageReference Include="NUnit" Version="3.12.0" />
+        <PackageReference Include="NUnit3TestAdapter" Version="3.16.1" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\TouchDcs\TouchDcs.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Remove="Resources\**" />
+        <Content Include="Resources\**">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+<!--      <None Remove="Resources\OscConfigurations\FixedStepTests.json" />-->
+<!--      <Content Include="Resources\OscConfigurations\FixedStepTests.json">-->
+<!--        <CopyToOutputDirectory>Always</CopyToOutputDirectory>-->
+<!--      </Content>-->
+<!--      <None Remove="Resources\OscConfigurations\MultiToggleExclusiveTests.json" />-->
+<!--      <Content Include="Resources\OscConfigurations\MultiToggleExclusiveTests.json">-->
+<!--        <CopyToOutputDirectory>Always</CopyToOutputDirectory>-->
+<!--      </Content>-->
+<!--      <None Remove="Resources\OscConfigurations\ReMapTests.json" />-->
+<!--      <Content Include="Resources\OscConfigurations\ReMapTests.json">-->
+<!--        <CopyToOutputDirectory>Always</CopyToOutputDirectory>-->
+<!--      </Content>-->
+<!--      <None Remove="Resources\OscConfigurations\TransformIntegerTests.json" />-->
+<!--      <Content Include="Resources\OscConfigurations\TransformIntegerTests.json">-->
+<!--        <CopyToOutputDirectory>Always</CopyToOutputDirectory>-->
+<!--      </Content>-->
+    </ItemGroup>
+
+</Project>

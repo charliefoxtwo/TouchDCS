@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using BiosConfiguration;
-using Core;
 using Core.Logging;
 using DcsBiosCommunicator;
 using OscCommunicator;
@@ -34,7 +33,7 @@ namespace TouchDcs
         /// <summary>
         /// IP Address -> client
         /// </summary>
-        private readonly Dictionary<string, ISendClient> _oscSenders;
+        private readonly Dictionary<string, IOscSendClient> _oscSenders;
 
         /// <summary>
         /// device ip -> loaded configuration
@@ -67,9 +66,9 @@ namespace TouchDcs
         /// </summary>
         private readonly Dictionary<string, HashSet<string>> _aircraftForBiosCommand = new();
 
-        private readonly ISendClient _biosSender;
+        private readonly IBiosSendClient _biosSender;
 
-        public BiosOscTranslator(in List<ISendClient> oscSenders, in ISendClient biosSender, IEnumerable<AircraftBiosConfiguration> biosConfigs,
+        public BiosOscTranslator(in List<IOscSendClient> oscSenders, in IBiosSendClient biosSender, IEnumerable<AircraftBiosConfiguration> biosConfigs,
             IEnumerable<AircraftOscConfiguration> oscConfigs, in HashSet<string> nonAircraftModules, in ILogger logger)
         {
             _oscSenders = oscSenders.ToDictionary(s => s.DeviceIpAddress, s => s);
@@ -316,7 +315,7 @@ namespace TouchDcs
                 if (setStateInput != null)
                 {
                     _biosSender.Send(address,
-                        setStateInput.MaxValue > 1 ? UnclampDataForBios(floatData, setStateInput.MaxValue) : floatData).Wait();
+                        ((int)Math.Round(setStateInput.MaxValue > 1 ? UnclampDataForBios(floatData, setStateInput.MaxValue) : floatData)).ToString()).Wait();
                 }
                 else if (fixedStepInput != null)
                 {
@@ -351,10 +350,11 @@ namespace TouchDcs
                     if (!_guessedAircraft.Any())
                     {
                         _guessedAircraft = aircrafts;
-                        return;
                     }
-
-                    _guessedAircraft.IntersectWith(aircrafts);
+                    else
+                    {
+                        _guessedAircraft.IntersectWith(aircrafts);
+                    }
 
                     if (_guessedAircraft.Count != 1) return;
                     _activeAircraft = _guessedAircraft.First();
@@ -412,7 +412,7 @@ namespace TouchDcs
 
                 foreach (var (address, sendData) in messages.Append(GetOscCommand($"{configuration.SyncAddress}_STATUS", 1)))
                 {
-                    sendClient.Send(address, sendData).Wait();
+                    sendClient.Send(address, sendData);
                 }
             }
         }
@@ -477,7 +477,7 @@ namespace TouchDcs
             if (oscControls?.TryGetValue(syncAddress, out controls) != true || controls is null)
             {
                 // no overrides, send the standard address
-                yield return GetOscCommand(biosCode, biosOutput.MaxValue > 1 ? ClampDataForOsc(data, biosOutput.MaxValue) : data);
+                yield return GetOscCommand(biosCode, biosOutput.MaxValue > 1 ? ClampDataForOsc(data, biosOutput.MaxValue) : (float) data);
                 yield break;
             }
 

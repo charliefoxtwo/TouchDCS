@@ -1,0 +1,13 @@
+{
+    "$schema": "https://raw.githubusercontent.com/charliefoxtwo/TouchDCS/main/Configuration/Schema/LayoutConfiguration.json.schema",
+
+    "syncAddress": "CharliesHueyCenterConsole",
+    
+    "properties": {
+        "VHFNAV_PWR": {
+            "controlType": "MultiToggleExclusive",
+            "orientation": "Horizontal",
+            "invertOrientation": false
+        }
+    }
+}

@@ -1,0 +1,20 @@
+{
+    "$schema": "https://raw.githubusercontent.com/charliefoxtwo/TouchDCS/main/Configuration/Schema/LayoutConfiguration.json.schema",
+
+    "syncAddress": "ReMapTests",
+    
+    "properties": {
+        "RemappedStringOut": {
+            "reMap": {
+                "foo": "bar",
+                "baz": "biz"
+            }
+        },
+        "RemappedIntOut": {
+            "reMap": {
+                "100": "1000",
+                "1000": "100"
+            }
+        }
+    }
+}

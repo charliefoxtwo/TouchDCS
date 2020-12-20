@@ -1,4 +1,4 @@
-﻿# Features
+# Features
 
  - Build custom control panels to use on your phone or tablet
  - Two-way communication with DCS-BIOS

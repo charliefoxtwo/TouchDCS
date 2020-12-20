@@ -1,0 +1,67 @@
+{
+    "Strings": {
+        "StringOutAircraftSync": {
+            "category": "Led",
+            "control_type": "led",
+            "description": "Used strictly to sync the 'aircraft' type.",
+            "identifier": "StringOutAircraftSync",
+            "inputs": [
+            ],
+            "outputs": [
+                {
+                    "description": "0 if light is off, 1 if light is on",
+                    "max_value": 1,
+                    "type": "integer"
+                }
+            ]
+        },
+        "StringOutNoConfig": {
+            "category": "Strings",
+            "control_type": "display",
+            "description": "TACAN Channel",
+            "identifier": "StringOutNoConfig",
+            "inputs":[
+
+            ],
+            "outputs":[
+                {
+                    "description": "TACAN Channel",
+                    "max_length": 4,
+                    "type": "string"
+                }
+            ]
+        },
+        "StringOutConfig": {
+            "category": "Strings",
+            "control_type": "display",
+            "description": "TACAN Channel",
+            "identifier": "StringOutConfig",
+            "inputs":[
+
+            ],
+            "outputs":[
+                {
+                    "description": "TACAN Channel",
+                    "max_length": 4,
+                    "type": "string"
+                }
+            ]
+        },
+        "StringOutReMap": {
+            "category": "Strings",
+            "control_type": "display",
+            "description": "TACAN Channel",
+            "identifier": "StringOutReMap",
+            "inputs":[
+
+            ],
+            "outputs":[
+                {
+                    "description": "TACAN Channel",
+                    "max_length": 4,
+                    "type": "string"
+                }
+            ]
+        }
+    }
+}

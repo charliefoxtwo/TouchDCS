@@ -1,0 +1,17 @@
+﻿{
+    "$schema": "https://raw.githubusercontent.com/charliefoxtwo/TouchDCS/main/Configuration/Schema/LayoutConfiguration.json.schema",
+
+    "syncAddress": "StringOutTests",
+
+    "properties": {
+        "StringOutConfig": {
+            
+        },
+        "StringOutReMap": {
+            "reMap" : {
+                "A": "B",
+                "CD": "E"
+            }
+        }
+    }
+}

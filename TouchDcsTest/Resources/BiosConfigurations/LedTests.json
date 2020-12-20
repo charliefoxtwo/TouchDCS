@@ -1,0 +1,79 @@
+{
+    "Led": {
+        "LedAircraftSync": {
+            "category": "Led",
+            "control_type": "led",
+            "description": "Used strictly to sync the 'aircraft' type.",
+            "identifier": "LedAircraftSync",
+            "inputs": [
+            ],
+            "outputs": [
+                {
+                    "description": "0 if light is off, 1 if light is on",
+                    "max_value": 1,
+                    "type": "integer"
+                }
+            ]
+        },
+        "LedConfig": {
+            "category": "Led",
+            "control_type": "led",
+            "description": "Binary (0-1) value with a backing config in LedTests.json",
+            "identifier": "LedConfig",
+            "inputs": [
+            ],
+            "outputs": [
+                {
+                    "description": "0 if light is off, 1 if light is on",
+                    "max_value": 1,
+                    "type": "integer"
+                }
+            ]
+        },
+        "LedNoConfig": {
+            "category": "Led",
+            "control_type": "led",
+            "description": "Binary (0-1) value",
+            "identifier": "LedNoConfig",
+            "inputs": [
+            ],
+            "outputs": [
+                {
+                    "description": "0 if light is off, 1 if light is on",
+                    "max_value": 1,
+                    "type": "integer"
+                }
+            ]
+        },
+        "LedConfigNeedsClamp": {
+            "category": "Led",
+            "control_type": "led",
+            "description": "Analogue (0-65535) value with a backing config in LedTests.json",
+            "identifier": "LedConfigNeedsClamp",
+            "inputs": [
+            ],
+            "outputs": [
+                {
+                    "description": "0 if light is off, 65535 if light is on, brightness gradient",
+                    "max_value": 65535,
+                    "type": "integer"
+                }
+            ]
+        },
+        "LedNoConfigNeedsClamp": {
+            "category": "Led",
+            "control_type": "led",
+            "description": "Analogue (0-65535) value",
+            "identifier": "LedNoConfigNeedsClamp",
+            "inputs": [
+            ],
+            "outputs": [
+                {
+                    "description": "0 if light is off, 65535 if light is on, brightness gradient",
+                    "max_value": 65535,
+                    "type": "integer"
+                }
+            ]
+        }
+    }
+}

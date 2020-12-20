@@ -3,16 +3,13 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using Core;
 using Core.Logging;
 
 namespace DcsBiosCommunicator
 {
-    public class BiosUdpClient : IUdpReceiveClient, ISendClient, IDisposable
+    public class BiosUdpClient : IUdpReceiveClient, IBiosSendClient, IDisposable
     {
         private const string BlankBiosCommand = "\n";
-
-        public string DeviceIpAddress { get; }
 
         private readonly UdpClient _client;
         private readonly IPAddress _ipAddress;
@@ -31,7 +28,6 @@ namespace DcsBiosCommunicator
             IPEndPoint localEndpoint = new (IPAddress.Any, receivePort);
 
             _target = new IPEndPoint(IPAddress.Broadcast, sendPort);
-            DeviceIpAddress = _target.Address.ToString();
 
             _client.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
 
@@ -43,7 +39,7 @@ namespace DcsBiosCommunicator
             return await _client.ReceiveAsync();
         }
 
-        public async Task Send(string biosAddress, object data)
+        public async Task Send(string biosAddress, string data)
         {
             var message = $"{biosAddress} {data}{BlankBiosCommand}";
             _log.Debug($"Sending {{{message.TrimEnd('\n')}}} to DCS-BIOS.");
