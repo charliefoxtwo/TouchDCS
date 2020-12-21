@@ -56,7 +56,7 @@ namespace OscCommunicator
 
                     var results = message.ToArray();
 
-                    if (results is null) continue;
+                    if (results is null || results.Length == 0) continue;
 
                     if (results.Length == 1)
                     {
