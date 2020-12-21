@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using BiosConfiguration;
 using Core.Logging;
 using DcsBiosCommunicator;
@@ -343,24 +344,17 @@ namespace TouchDcs
             BiosInfo<BiosOutput> outputs;
 
             // if we don't recognize this, just gtfo
-            if (_aircraftForBiosCommand.TryGetValue(biosCode, out var aircrafts))
+            if (biosCode == "_ACFT_NAME" && data is string aircraftName)
             {
-                if (_activeAircraft is null)
-                {
-                    if (!_guessedAircraft.Any())
-                    {
-                        _guessedAircraft = aircrafts;
-                    }
-                    else
-                    {
-                        _guessedAircraft.IntersectWith(aircrafts);
-                    }
+                _activeAircraft = aircraftName;
+                return;
+            }
 
-                    if (_guessedAircraft.Count != 1) return;
-                    _activeAircraft = _guessedAircraft.First();
-                    _log.Info($"New aircraft detected -> {{{_activeAircraft}}}");
-                }
+            // don't do anything until we have the current aircraft
+            if (_activeAircraft is null) return;
 
+            if (_aircraftForBiosCommand.TryGetValue(biosCode, out _))
+            {
                 if (!_allAircraftBiosOutputs.TryGetValue(_activeAircraft, out var biosOutputInfos))
                 {
                     _log.Error($"Aircraft {_activeAircraft} not recognized.");
@@ -370,9 +364,10 @@ namespace TouchDcs
 
                 if (!biosOutputInfos.TryGetValue(biosCode, out var aircraftOutputs))
                 {
-                    _log.Warn($"Aircraft {_activeAircraft} does not contain bios code {biosCode}.");
-                    _log.Info("Detecting new aircraft...");
-                    _activeAircraft = null;
+                    // this isn't worth worrying about. We can have cases where modules overlap (e.g., the huey has an
+                    //  integer value where the tomcat has a string value, on the same address - 5244) and there's no
+                    //  sane way to really handle this.
+                    // _log.Warn($"Aircraft {_activeAircraft} does not contain bios code {biosCode}.");
                     return;
                 }
 
@@ -386,7 +381,7 @@ namespace TouchDcs
                     _log.Warn($"DCS-BIOS code {biosCode} does not match any modules.");
                     return;
                 }
-
+            
                 outputs = moduleOutputs;
             }
 
