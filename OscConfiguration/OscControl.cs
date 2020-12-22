@@ -5,6 +5,7 @@ namespace OscConfiguration
     public class OscControl
     {
         public ControlType ControlType { get; set; }
+        public OutputType OutputType { get; set; }
 
         /// <summary>
         /// Use this if you want to invert the value of a control (e.g. if you want a toggle to send 0 when on and 1 when off).
@@ -52,5 +53,14 @@ namespace OscConfiguration
         MultiToggleExclusive,
         Button,
         Toggle,
+        Label,
+    }
+
+    public enum OutputType
+    {
+        Unknown,
+        None,
+        String,
+        Integer,
     }
 }

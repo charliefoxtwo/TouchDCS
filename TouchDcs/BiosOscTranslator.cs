@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -262,6 +262,7 @@ namespace TouchDcs
 
                 if (setStateInput != null && !oscControl.IgnoreSetState)
                 {
+                    if (oscControl.Inverted) floatData = 1 - floatData;
                     if (oscControl.InvertOrientation) floatData = setStateInput.MaxValue - floatData;
                     res = oscControl.ControlType == ControlType.MultiToggleExclusive ? (int) floatData : UnclampDataForBios(floatData, setStateInput.MaxValue);
                     resStr = res.ToString();
@@ -417,13 +418,14 @@ namespace TouchDcs
             var (_, oscControls) = outputs;
 
             IndexedOscDictionary? controls = null;
-            if (oscControls?.TryGetValue(syncAddress, out controls) != true || controls is null)            {
+            if (oscControls?.TryGetValue(syncAddress, out controls) != true || controls is null) {
                 yield return GetOscCommand(biosCode, data);
                 yield break;
             }
 
             foreach (var (oscAddress, oscControl) in controls)
             {
+                if (oscControl.OutputType == OutputType.Integer || oscControl.OutputType == OutputType.None) continue; // strings only, please
                 if (oscControl.ReMap is not null && oscControl.ReMap.TryGetValue(data, out var newData))
                 {
                     data = newData!;
@@ -486,8 +488,14 @@ namespace TouchDcs
             // for faders/rotaries, we just need to clamp the value?
             foreach (var (oscAddress, oscControl) in controls)
             {
+                if (oscControl.OutputType == OutputType.String || oscControl.OutputType == OutputType.None) continue; // we don't want to bother with this one
                 // in this case we can't really map a value to the control, so leave it?
                 if (oscControl.ControlType == ControlType.Button && biosOutput.MaxValue > 1) continue;
+
+                if (oscControl.Inverted)
+                {
+                    data = biosOutput.MaxValue - data;
+                }
 
                 if (oscControl.ReMap is not null)
                 {
@@ -516,6 +524,7 @@ namespace TouchDcs
                             biosOutput.MaxValue),
                         // ControlType.Button => throw new NotImplementedException(),
                         // ControlType.Toggle => throw new NotImplementedException(),
+                        ControlType.Label => GetOscCommand(oscAddress, data),
                         _ => GetOscCommand(oscAddress,
                             biosOutput.MaxValue > 1 ? ClampDataForOsc(data, biosOutput.MaxValue) : data),
                     };
