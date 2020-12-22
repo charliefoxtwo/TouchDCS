@@ -1,9 +1,12 @@
 ﻿using NUnit.Framework;
+using TouchDcsTest.TranslatorTests.Keys;
 
 namespace TouchDcsTest.TranslatorTests
 {
     public class StringOutTranslatorTests : TranslatorTestBase<StringOutTranslatorKeys>
     {
+        public StringOutTranslatorTests() : base("StringOutTests") { }
+
         #region From Bios
 
         [Theory]

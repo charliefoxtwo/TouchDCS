@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using TouchDcsTest.TranslatorTests.Keys;
 
 namespace TouchDcsTest.TranslatorTests
 {
@@ -6,6 +7,8 @@ namespace TouchDcsTest.TranslatorTests
     {
         // TODO: we actually don't need that many test types. we only need matching output types and matching input types.
         // it would be far easier to do it that way than the current full json for every single test
+
+        public LedTranslatorTests() : base("LedTests") { }
 
         #region From Bios
 

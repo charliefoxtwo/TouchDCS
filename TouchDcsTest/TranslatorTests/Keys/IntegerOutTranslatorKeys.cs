@@ -1,8 +1,7 @@
-﻿namespace TouchDcsTest.TranslatorTests
+﻿namespace TouchDcsTest.TranslatorTests.Keys
 {
     public class IntegerOutTranslatorKeys : ITranslatorTest
     {
-        public string ConfigSync { get; } = "IntegerOutAircraftSync";
         public string SyncAddress { get; } = "IntegerOutTests";
         public string NoConfig { get; } = "IntegerOutNoConfig";
         public string Config { get; } = "IntegerOutConfig";

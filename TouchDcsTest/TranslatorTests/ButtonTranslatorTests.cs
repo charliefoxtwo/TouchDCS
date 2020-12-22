@@ -1,10 +1,13 @@
 ﻿using BiosConfiguration;
 using NUnit.Framework;
+using TouchDcsTest.TranslatorTests.Keys;
 
 namespace TouchDcsTest.TranslatorTests
 {
     public class ButtonTranslatorTests : TranslatorTestBase<ButtonTranslatorKeys>
     {
+        public ButtonTranslatorTests() : base("ButtonTests") { }
+
         #region From Bios
 
         [Theory]

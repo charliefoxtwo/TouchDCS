@@ -1,8 +1,7 @@
-﻿namespace TouchDcsTest.TranslatorTests
+﻿namespace TouchDcsTest.TranslatorTests.Keys
 {
     public class ButtonTranslatorKeys : ITranslatorTest
     {
-        public string ConfigSync { get; } = "ButtonAircraftSync";
         public string SyncAddress { get; } = "ButtonTests";
         public string NoConfig { get; } = "ButtonNoConfig";
         public string Config { get; } = "ButtonConfig";

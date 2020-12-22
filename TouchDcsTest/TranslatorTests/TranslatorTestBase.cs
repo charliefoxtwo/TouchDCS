@@ -22,7 +22,7 @@ namespace TouchDcsTest.TranslatorTests
 
         protected T Keys { get; }
 
-        protected TranslatorTestBase()
+        protected TranslatorTestBase(string moduleName)
         {
             Keys = new T();
             var logger = new TestLogger();
@@ -41,7 +41,7 @@ namespace TouchDcsTest.TranslatorTests
             BiosVerifier = new ToBiosVerifier(translator, biosSender);
             OscVerifier = new ToOscVerifier(translator, oscSender);
 
-            translator.FromBios(Keys.ConfigSync, 1);
+            translator.FromBios(BiosListener.AircraftNameBiosCode, moduleName);
             translator.FromOsc(IpAddress, Keys.SyncAddress, 1);
         }
 

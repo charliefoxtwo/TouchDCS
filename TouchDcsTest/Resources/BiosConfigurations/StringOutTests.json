@@ -1,20 +1,5 @@
 {
     "Strings": {
-        "StringOutAircraftSync": {
-            "category": "Led",
-            "control_type": "led",
-            "description": "Used strictly to sync the 'aircraft' type.",
-            "identifier": "StringOutAircraftSync",
-            "inputs": [
-            ],
-            "outputs": [
-                {
-                    "description": "0 if light is off, 1 if light is on",
-                    "max_value": 1,
-                    "type": "integer"
-                }
-            ]
-        },
         "StringOutNoConfig": {
             "category": "Strings",
             "control_type": "display",

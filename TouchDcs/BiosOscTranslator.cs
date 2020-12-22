@@ -345,7 +345,7 @@ namespace TouchDcs
             BiosInfo<BiosOutput> outputs;
 
             // if we don't recognize this, just gtfo
-            if (biosCode == "_ACFT_NAME" && data is string aircraftName)
+            if (biosCode == BiosListener.AircraftNameBiosCode && data is string aircraftName)
             {
                 _activeAircraft = aircraftName;
                 return;

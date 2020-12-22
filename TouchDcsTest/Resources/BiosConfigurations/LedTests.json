@@ -1,20 +1,5 @@
 {
     "Led": {
-        "LedAircraftSync": {
-            "category": "Led",
-            "control_type": "led",
-            "description": "Used strictly to sync the 'aircraft' type.",
-            "identifier": "LedAircraftSync",
-            "inputs": [
-            ],
-            "outputs": [
-                {
-                    "description": "0 if light is off, 1 if light is on",
-                    "max_value": 1,
-                    "type": "integer"
-                }
-            ]
-        },
         "LedConfig": {
             "category": "Led",
             "control_type": "led",
