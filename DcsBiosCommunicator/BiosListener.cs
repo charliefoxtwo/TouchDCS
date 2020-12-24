@@ -22,6 +22,7 @@ namespace DcsBiosCommunicator
         private readonly Dictionary<string, Dictionary<int, StringParser>> _moduleStringActions = new();
         private string? _activeAircraft;
         private Task? _delegateThread;
+        private StringParser? _lastParser;
 
         private readonly CancellationTokenSource _cts = new();
 
@@ -120,25 +121,13 @@ namespace DcsBiosCommunicator
 
         private void OnBiosDataReceived(int address, int data)
         {
-            // we need to check active aircraft actions first, then all actions
-
-            // special case active aircraft
-            if (_stringActions.TryGetValue(address, out var codeParser) && codeParser.BiosCode == AircraftNameBiosCode)
+            // for some reason this triggers for active aircraft from time to time, even though in my testing
+            // the active aircraft code isn't null terminated
+            // no matter, since we're handling that below we'll just skip it here
+            if (address == 0xfffe && _lastParser is not null && _lastParser.BiosCode != AircraftNameBiosCode)
             {
-                _log.Trace($"{address:x4} -> got string data -> {data:x4}");
-                var success = codeParser.TryGetValue(address, data, out var result);
-                if (!success || !codeParser.NeedsSync(result)) return;
-                codeParser.LastValue = result;
-
-                // for the huey it has a weird null character at the end. This may be a bug or something else going on
-                var aircraftName = AircraftNameRegex.Replace(result, "").Trim();
-                if (string.IsNullOrEmpty(aircraftName)) return; // we just haven't loaded the aircraft name yet
-                if (_activeAircraft != aircraftName)
-                {
-                    _log.Info($"New aircraft detected -> {{{_activeAircraft}}}");
-                }
-                _activeAircraft = aircraftName;
-                _biosTranslator.FromBios(codeParser.BiosCode, _activeAircraft);
+                _lastParser.LastValue = _lastParser.CurrentValue;
+                _biosTranslator.FromBios(_lastParser.BiosCode, _lastParser.CurrentValue);
                 return;
             }
 
@@ -157,15 +146,30 @@ namespace DcsBiosCommunicator
                     _biosTranslator.FromBios(mask.BiosCode, result);
                 }
             }
+
             // some controls are registered to both strings and integers, because life is fun like that.
             if (_activeAircraft is not null &&
                 _moduleStringActions.TryGetValue(_activeAircraft, out var stringActions) &&
                 stringActions.TryGetValue(address, out var parser) || _stringActions.TryGetValue(address, out parser))
             {
                 _log.Trace($"{address:x4} -> got string data -> {data:x4}");
+                _lastParser = parser;
+
                 var success = parser.TryGetValue(address, data, out var result);
-                if (!success || !parser.NeedsSync(result)) return;
-                parser.LastValue = result;
+
+                if (!success) return;
+
+                if (parser.BiosCode == AircraftNameBiosCode)
+                {
+                    // name is fixed-length and null-terminated. fun.
+                    result = AircraftNameRegex.Replace(result, "").Trim();
+                    if (string.IsNullOrEmpty(result)) return; // we just haven't loaded the aircraft name yet
+                    if (_activeAircraft != result)
+                    {
+                        _activeAircraft = result;
+                        _log.Info($"New aircraft detected -> {{{_activeAircraft}}}");
+                    }
+                }
 
                 _biosTranslator.FromBios(parser.BiosCode, result);
             }

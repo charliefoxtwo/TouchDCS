@@ -324,7 +324,7 @@ namespace TouchDcs
                     // if not, maybe it's a module input?
                     if (!_allModuleBiosInputs.TryGetValue(address, out inputInfo))
                     {
-                        _log.Warn($"Unable to find matching DCS-BIOS command for {address}");
+                        _log.Warn($"Unable to find matching DCS-BIOS command for {address} in aircraft {_activeAircraft}");
                         return;
                     }
                 }
@@ -364,7 +364,7 @@ namespace TouchDcs
             BiosInfo<BiosOutput> outputs;
 
             // if we don't recognize this, just gtfo
-            if (biosCode == BiosListener.AircraftNameBiosCode && data is string aircraftName)
+            if (biosCode == BiosListener.AircraftNameBiosCode && data is string aircraftName && aircraftName != _activeAircraft)
             {
                 _activeAircraft = aircraftName;
                 return;
