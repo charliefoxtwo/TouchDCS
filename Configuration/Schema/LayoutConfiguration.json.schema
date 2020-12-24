@@ -74,11 +74,11 @@
                 "controlType": {
                     "description": "The type of the OSC control.",
                     "type": "string",
-                    "enum": ["MultiToggle", "MultiToggleExclusive", "Button", "Toggle", "Label"]
+                    "enum": ["MultiToggle", "MultiToggleExclusive", "Button", "Toggle", "Label", "Encoder"]
                 },
 
                 "outputType": {
-                    "description": "Restricts the processed outputs of a control to the output type specified."
+                    "description": "Restricts the processed outputs of a control to the output type specified.",
                     "type": "string",
                     "enum": ["String", "Integer", "None"]
                 }

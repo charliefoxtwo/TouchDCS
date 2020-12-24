@@ -160,6 +160,18 @@
         "ADF_BAND": {
             "controlType": "MultiToggleExclusive",
             "orientation": "Horizontal"
+        },
+        "ADF_TUNE": {
+            "controlType": "Encoder",
+            "ignoreSetState": true,
+            "fixedStepOverride": 800,
+            "inverted": true
+        },
+        "ADF_GAIN": {
+            "controlType": "Encoder",
+            "ignoreSetState": true,
+            "fixedStepOverride": 800,
+            "inverted": true
         }
     }
 }

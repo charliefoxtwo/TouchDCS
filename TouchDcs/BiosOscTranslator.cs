@@ -260,9 +260,20 @@ namespace TouchDcs
                 int res;
                 string resStr;
 
+                if (oscControl.Inverted)
+                {
+                    if (oscControl.ControlType == ControlType.Encoder)
+                    {
+                        floatData -= 2 * floatData;
+                    }
+                    else
+                    {
+                        floatData = 1 - floatData;
+                    }
+                }
+
                 if (setStateInput != null && !oscControl.IgnoreSetState)
                 {
-                    if (oscControl.Inverted) floatData = 1 - floatData;
                     if (oscControl.InvertOrientation) floatData = setStateInput.MaxValue - floatData;
                     res = oscControl.ControlType == ControlType.MultiToggleExclusive ? (int) floatData : UnclampDataForBios(floatData, setStateInput.MaxValue);
                     resStr = res.ToString();
@@ -273,7 +284,15 @@ namespace TouchDcs
                     res = oscControl.FixedStepOverride != 0
                         ? oscControl.FixedStepOverride
                         : variableStepInput.SuggestedStep;
-                    resStr = Math.Sign(res) < 0 ? res.ToString() : $"+{res}";
+
+                    if (oscControl.ControlType == ControlType.Encoder)
+                    {
+                        resStr = Math.Sign(floatData) < 0 ? $"-{res}" : $"+{res}";
+                    }
+                    else
+                    {
+                        resStr = Math.Sign(res) < 0 ? res.ToString() : $"+{res}";
+                    }
                 }
                 else if (fixedStepInput != null)
                 {

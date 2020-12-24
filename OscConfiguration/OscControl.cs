@@ -54,6 +54,7 @@ namespace OscConfiguration
         Button,
         Toggle,
         Label,
+        Encoder,
     }
 
     public enum OutputType
