@@ -22,11 +22,8 @@ namespace DcsBiosCommunicator
         private readonly Dictionary<string, Dictionary<int, StringParser>> _moduleStringActions = new();
         private string? _activeAircraft;
         private Task? _delegateThread;
-        private StringParser? _lastParser;
 
         private readonly CancellationTokenSource _cts = new();
-
-        private static readonly Regex AircraftNameRegex = new Regex("[^a-zA-Z0-9 \\-_]");
 
         private readonly IBiosTranslator _biosTranslator;
         private readonly ILogger _log;
@@ -121,16 +118,6 @@ namespace DcsBiosCommunicator
 
         private void OnBiosDataReceived(int address, int data)
         {
-            // for some reason this triggers for active aircraft from time to time, even though in my testing
-            // the active aircraft code isn't null terminated
-            // no matter, since we're handling that below we'll just skip it here
-            if (address == 0xfffe && _lastParser is not null && _lastParser.BiosCode != AircraftNameBiosCode)
-            {
-                _lastParser.LastValue = _lastParser.CurrentValue;
-                _biosTranslator.FromBios(_lastParser.BiosCode, _lastParser.CurrentValue);
-                return;
-            }
-
             if (_activeAircraft is not null &&
                 _moduleIntegerActions.TryGetValue(_activeAircraft, out var integerActions) &&
                 integerActions.TryGetValue(address, out var handler) ||
@@ -139,11 +126,8 @@ namespace DcsBiosCommunicator
                 _log.Trace($"{address:x4} -> got int data -> {data:x4}");
                 foreach (var mask in handler.MaskShifts)
                 {
-                    var success = mask.TryGetValue(address, data, out var result);
-                    if (!success || !mask.NeedsSync(result)) continue;
-                    mask.LastValue = result;
-
-                    _biosTranslator.FromBios(mask.BiosCode, result);
+                    mask.AddData(address, data);
+                    _biosTranslator.FromBios(mask.BiosCode, mask.CurrentValue);
                 }
             }
 
@@ -153,16 +137,15 @@ namespace DcsBiosCommunicator
                 stringActions.TryGetValue(address, out var parser) || _stringActions.TryGetValue(address, out parser))
             {
                 _log.Trace($"{address:x4} -> got string data -> {data:x4}");
-                _lastParser = parser;
 
-                var success = parser.TryGetValue(address, data, out var result);
+                parser.AddData(address, data);
 
-                if (!success) return;
-
+                var result = parser.CurrentValue;
                 if (parser.BiosCode == AircraftNameBiosCode)
                 {
+                    if (!parser.DataReady) return;
                     // name is fixed-length and null-terminated. fun.
-                    result = AircraftNameRegex.Replace(result, "").Trim();
+                    result = result.Split(default(char))[0];
                     if (string.IsNullOrEmpty(result)) return; // we just haven't loaded the aircraft name yet
                     if (_activeAircraft != result)
                     {
