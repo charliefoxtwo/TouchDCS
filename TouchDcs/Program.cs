@@ -45,7 +45,7 @@ namespace TouchDcs
 
             log.Info("Ready!");
 
-            Console.ReadKey(true);
+            await Task.Delay(-1);
         }
 
         private static async Task<AircraftBiosConfiguration[]> GetAircraftBiosConfigurations(
