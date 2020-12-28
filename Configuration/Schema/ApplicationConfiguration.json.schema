@@ -93,7 +93,7 @@
                 },
 
                 "export": {
-                    "$ref": "#endpoint",
+                    "$ref": "#/definitions/endpoint",
                     "description": "The network location DCS-BIOS exports from."
                 }
             },
