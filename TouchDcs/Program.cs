@@ -21,7 +21,15 @@ namespace TouchDcs
         public static async Task Main(string[] args)
         {
             var appConfig = ApplicationConfiguration.Get();
-            var log = new Acacia(nameof(TouchDcs), appConfig.LogLevel);
+            var log = new Acacia(nameof(TouchDcs), appConfig?.LogLevel ?? LogLevel.Info);
+            if (appConfig is null)
+            {
+                log.Warn("No configuration detected; creating default config.json");
+                ApplicationConfiguration.CreateNewConfiguration();
+                log.Info("Edit osc.configLocations and osc.devices in accordance with your setup, and then restart TouchDCS");
+                Console.ReadKey(true);
+                return;
+            }
 
             var oscSenders = SetUpOscSenders(appConfig);
             var biosUdpClient = SetUpBiosUdpClient(appConfig);

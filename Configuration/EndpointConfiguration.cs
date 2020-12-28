@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Net;
+using Newtonsoft.Json;
 
 namespace Configuration
 {
@@ -8,6 +9,7 @@ namespace Configuration
     {
         public string IpAddress { get; set; } = null!;
 
+        [JsonIgnore]
         public IPAddress Ip => IPAddress.Parse(IpAddress);
 
         [Range(1, 65535)]

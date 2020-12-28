@@ -30,7 +30,7 @@
                 "receivePort": 9000
             },
             {
-                "ipAddress": "192.168.50.86",
+                "ipAddress": "192.168.50.90",
                 "sendPort": 9003,
                 "receivePort": 9002
             }
