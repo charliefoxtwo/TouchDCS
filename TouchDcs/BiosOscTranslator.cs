@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using BiosConfiguration;
 using Core.Logging;
 using DcsBiosCommunicator;
@@ -28,8 +27,6 @@ namespace TouchDcs
         // but multiple aircraft may have the same string address for controls
 
         private string? _activeAircraft;
-
-        private HashSet<string> _guessedAircraft = new();
 
         private readonly ILogger _log;
 
@@ -105,10 +102,6 @@ namespace TouchDcs
                     biosCodeToOscControls[key][configSyncAddress].Add(oscCode, oscControl);
                 }
             }
-            // var y = oscConfigs.SelectMany(o => o.Values).GroupBy(c => c.BiosProperty).ToDictionary(g => g.Key, g => g.ToList());
-
-
-            // aircraft name -> (bios code -> biosOutputInfo)
 
             foreach (var aircraftConfig in biosConfigs)
             {
@@ -215,7 +208,7 @@ namespace TouchDcs
                         !int.TryParse(splitAddress[^1], out var row) ||
                         !int.TryParse(splitAddress[^2], out var column))
                     {
-                        _log.Error($"Attepted to handle multitoggle exclusive {{{address}}}, but unable to parse data");
+                        _log.Error($"Attempted to handle multitoggle exclusive {{{address}}}, but unable to parse data");
                         return;
                     }
 
@@ -320,8 +313,7 @@ namespace TouchDcs
 
                 // FromBios will set the active aircraft.
                 // check to see if this is an aircraft input
-                BiosInfo<BiosInput>? inputInfo;
-                if (!(_activeAircraft is not null && _allAircraftBiosInputs.TryGetValue(_activeAircraft, out var inputInfos) && inputInfos.TryGetValue(address, out inputInfo)))
+                if (!(_activeAircraft is not null && _allAircraftBiosInputs.TryGetValue(_activeAircraft, out var inputInfos) && inputInfos.TryGetValue(address, out var inputInfo)))
                 {
                     // if not, maybe it's a module input?
                     if (!_allModuleBiosInputs.TryGetValue(address, out inputInfo))
@@ -404,7 +396,7 @@ namespace TouchDcs
                     _log.Warn($"DCS-BIOS code {biosCode} does not match any modules.");
                     return;
                 }
-            
+
                 outputs = moduleOutputs;
             }
 
