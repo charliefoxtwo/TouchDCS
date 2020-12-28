@@ -12,6 +12,8 @@ namespace TouchDcs
 {
     public class BiosOscTranslator : IBiosTranslator, IOscTranslator
     {
+        private const string NoneAircraft = "NONE";
+
         // we'll keep track of our osc configurations here
         private readonly Dictionary<SyncAddress, AircraftOscConfiguration> _syncAddressToOscConfiguration =
             new();
@@ -366,7 +368,8 @@ namespace TouchDcs
             // if we don't recognize this, just gtfo
             if (biosCode == BiosListener.AircraftNameBiosCode && data is string aircraftName && aircraftName != _activeAircraft)
             {
-                _activeAircraft = aircraftName;
+                // if we are sending "NONE", then we don't currently have an aircraft.
+                _activeAircraft = aircraftName == NoneAircraft ? null : aircraftName;
                 return;
             }
 
