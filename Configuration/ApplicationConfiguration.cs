@@ -85,7 +85,7 @@ namespace Configuration
                 {
                     ConfigLocations = new List<string>
                     {
-                        "PATHS TO LAYOUT CONFIGURATION FILES HERE",
+                        "configurations/",
                     },
                     Devices = new List<EndpointConfiguration>
                     {
