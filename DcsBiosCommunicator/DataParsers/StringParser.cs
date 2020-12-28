@@ -9,17 +9,28 @@ namespace DcsBiosCommunicator.DataParsers
 
         public int Length { get; }
         private readonly char[] _buffer;
+        private readonly long _bufferSizeBits;
+        private long _bufferFilledBits;
+
+        private bool BufferFilled => _bufferFilledBits == _bufferSizeBits;
 
         public StringParser(in int address, in int length, in string biosCode) : base(address, biosCode)
         {
+            if (length < 1 || length > 64)
+                throw new ArgumentOutOfRangeException(nameof(length), length,
+                    $"Length of {biosCode} should be between 1 and 64, inclusive.");
+
             Length = length;
             _buffer = new char[length];
+            _bufferSizeBits = (long) Math.Pow(2, length) - 1;
         }
 
         private void SetCharacter(int index, char ch)
         {
             DataReady = false;
             _buffer[index] = ch;
+
+            if (!BufferFilled) _bufferFilledBits |= (long) Math.Pow(2, index);
         }
 
         /// <summary>
@@ -43,7 +54,7 @@ namespace DcsBiosCommunicator.DataParsers
                 }
             }
 
-            if (done)
+            if (done && BufferFilled)
             {
                 DataReady = true;
             }
