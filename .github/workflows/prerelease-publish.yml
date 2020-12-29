@@ -22,7 +22,9 @@ jobs:
     - name: Test
       run: dotnet test --no-restore --verbosity normal
     - name: Publish
-      run: cd TouchDcs && dotnet publish -r win-x64 -p:PublishSingleFile=true -p:DebugType=None --no-self-contained -c Release
+      run: cd TouchDcs && dotnet publish -r win-x64 -p:PublishSingleFile=true -p:DebugType=None --no-self-contained -c Release -o publish
+    - name: Zip Folder
+      run: cd TouchDcs/publish && zip -r touchdcs.zip .
     - uses: "marvinpinto/action-automatic-releases@latest"
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
@@ -30,4 +32,4 @@ jobs:
         prerelease: true
         title: "Latest Build"
         files: |
-            **/bin/Release/**/publish/*
+            **/touchdcs.zip
