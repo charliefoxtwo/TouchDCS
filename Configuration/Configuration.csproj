@@ -19,9 +19,10 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="config.debug.json" />
-      <Content Include="config.debug.json">
+      <None Remove="config.json" />
+      <Content Include="config.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        <CopyToPublishDirectory>Never</CopyToPublishDirectory>
       </Content>
     </ItemGroup>
 

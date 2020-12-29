@@ -35,19 +35,10 @@ namespace Configuration
                 var configPath = PathHelpers.FullOrRelativePath(ConfigLocation);
                 if (!File.Exists(configPath))
                 {
-#if DEBUG
-                    CreateNewConfiguration();
-#else
                     return null;
-#endif
                 }
 
                 var builder = new ConfigurationBuilder().AddJsonFile(PathHelpers.FullOrRelativePath(ConfigLocation));
-
-#if DEBUG
-                builder.AddJsonFile(PathHelpers.FullOrRelativePath(@"config.debug.json"), true);
-#endif
-
                 _configuration = builder.Build().Get<ApplicationConfiguration>();
             }
 
