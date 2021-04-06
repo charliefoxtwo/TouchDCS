@@ -13,7 +13,7 @@
             "controlType": "MultiToggleExclusive",
             "orientation": "Vertical"
         },
-        "UHF_FUNCTION": {
+        "UHF_FUNCTION_bak": {
             "controlType": "MultiToggleExclusive",
             "orientation": "Vertical"
         },

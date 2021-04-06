@@ -60,10 +60,11 @@ namespace OscCommunicator
 
                     if (results.Length == 1)
                     {
-                        _oscTranslator.FromOsc(packet.Origin.Address.ToString(), message.Address, Convert.ToSingle(results[0]));
+                        _oscTranslator.FromOsc(packet.Origin.Address.ToString(), message.Address, results[0]);
                     }
                     else
                     {
+                        // TODO: this will crash. fix or forbid.
                         _oscTranslator.FromOsc(packet.Origin.Address.ToString(), message.Address, results.Select(Convert.ToSingle));
                     }
                 }

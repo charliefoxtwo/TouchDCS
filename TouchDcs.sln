@@ -14,8 +14,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OscCommunicator", "OscCommu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TouchDcsTest", "TouchDcsTest\TouchDcsTest.csproj", "{B1085699-D2F1-4B00-BE18-24FFDE07B3F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OscConfiguration", "OscConfiguration\OscConfiguration.csproj", "{3287E298-76D9-49F0-B2F5-B9D6ACBEEE79}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,9 +48,5 @@ Global
 		{B1085699-D2F1-4B00-BE18-24FFDE07B3F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1085699-D2F1-4B00-BE18-24FFDE07B3F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B1085699-D2F1-4B00-BE18-24FFDE07B3F9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3287E298-76D9-49F0-B2F5-B9D6ACBEEE79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3287E298-76D9-49F0-B2F5-B9D6ACBEEE79}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3287E298-76D9-49F0-B2F5-B9D6ACBEEE79}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3287E298-76D9-49F0-B2F5-B9D6ACBEEE79}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

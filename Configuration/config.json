@@ -25,14 +25,14 @@
 
         "devices": [
             {
-                "ipAddress": "192.168.50.21",
-                "sendPort": 9001,
-                "receivePort": 9000
-            },
-            {
                 "ipAddress": "192.168.50.90",
                 "sendPort": 9003,
                 "receivePort": 9002
+            },
+            {
+                "ipAddress": "127.0.0.1",
+                "sendPort": 9005,
+                "receivePort": 9004
             }
         ]
     }

@@ -9,7 +9,6 @@ using Core;
 using Core.Logging;
 using DcsBiosCommunicator;
 using OscCommunicator;
-using OscConfiguration;
 
 namespace TouchDcs
 {
@@ -35,12 +34,9 @@ namespace TouchDcs
             var biosUdpClient = SetUpBiosUdpClient(appConfig);
 
             var aircraftBiosConfigs = await GetAircraftBiosConfigurations(appConfig);
-            var aircraftOscConfigs = GetAircraftOscConfigurations(appConfig);
-
 
             var translator = new BiosOscTranslator(oscSenders.ToList(), biosUdpClient, aircraftBiosConfigs,
-                aircraftOscConfigs, appConfig.CommonModules.ToHashSet(),
-                new Acacia(nameof(BiosOscTranslator), appConfig.LogLevel));
+                appConfig.CommonModules.ToHashSet(), new Acacia(nameof(BiosOscTranslator), appConfig.LogLevel));
 
             var biosListener = new BiosListener(biosUdpClient, translator, new Acacia(nameof(BiosListener), appConfig.LogLevel));
             foreach (var config in aircraftBiosConfigs)
@@ -64,14 +60,6 @@ namespace TouchDcs
                 .Select(AircraftBiosConfiguration.BuildFromConfiguration);
 
             return await Task.WhenAll(configTasks);
-        }
-
-        private static IEnumerable<AircraftOscConfiguration> GetAircraftOscConfigurations(
-            ApplicationConfiguration appConfig)
-        {
-            return appConfig.Osc.ConfigLocations
-                .SelectMany(GetAllJsonFilesBelowDirectory)
-                .Select(AircraftOscConfiguration.BuildFromFile).ToList();
         }
 
         private static IEnumerable<FileInfo> GetAllJsonFilesBelowDirectory(string directory)

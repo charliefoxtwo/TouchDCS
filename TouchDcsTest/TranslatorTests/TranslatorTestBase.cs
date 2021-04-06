@@ -8,7 +8,6 @@ using DcsBiosCommunicator;
 using Moq;
 using NUnit.Framework;
 using OscCommunicator;
-using OscConfiguration;
 using TouchDcs;
 using Range = Moq.Range;
 
@@ -35,7 +34,7 @@ namespace TouchDcsTest.TranslatorTests
             oscSender.SetupGet(c => c.DeviceIpAddress).Returns(IpAddress);
             var biosSender = new Mock<IBiosSendClient>();
             var translator = new BiosOscTranslator(new List<IOscSendClient> { oscSender.Object },
-                biosSender.Object, BuildBiosConfigurations(), BuildOscConfigurations(), new HashSet<string>(),
+                biosSender.Object, BuildBiosConfigurations(), new HashSet<string>(),
                 logger);
 
             BiosVerifier = new ToBiosVerifier(translator, biosSender);
@@ -49,12 +48,6 @@ namespace TouchDcsTest.TranslatorTests
         {
             return Task.WhenAll(Directory.EnumerateFiles(@"Resources/BiosConfigurations", "*.json", SearchOption.AllDirectories)
                 .Select(async f => await AircraftBiosConfiguration.BuildFromConfiguration(new FileInfo(f)))).Result;
-        }
-
-        private static IEnumerable<AircraftOscConfiguration> BuildOscConfigurations()
-        {
-            return Directory.EnumerateFiles(@"Resources/OscConfigurations", "*.json", SearchOption.AllDirectories).Select(f =>
-                AircraftOscConfiguration.BuildFromFile(new FileInfo(f)));
         }
 
         protected class ToOscVerifier
