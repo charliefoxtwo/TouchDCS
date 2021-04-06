@@ -20,7 +20,6 @@ namespace OscCommunicator
 
         public void Send(string address, object data)
         {
-            if (address == "/UHF_MODE") _log.Debug($"{address} -> sending data -> {data}");
             var message = new OscMessage(address, data);
             _sender.Send(message);
         }

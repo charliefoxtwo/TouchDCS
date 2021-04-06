@@ -41,7 +41,6 @@ namespace TouchDcsTest.TranslatorTests
             OscVerifier = new ToOscVerifier(translator, oscSender);
 
             translator.FromBios(BiosListener.AircraftNameBiosCode, moduleName);
-            translator.FromOsc(IpAddress, Keys.SyncAddress, 1);
         }
 
         private static IEnumerable<AircraftBiosConfiguration> BuildBiosConfigurations()
