@@ -1,10 +1,10 @@
 {
     "Button":{
-        "ButtonConfig":{
+        "SetStateButton":{
             "category":"Button",
             "control_type":"selector",
             "description":"Binary (0-1) value with a backing config in ButtonTests.json",
-            "identifier":"ButtonConfig",
+            "identifier":"SetStateButton",
             "inputs":[
                 {
                     "description":"switch to previous or next state",
@@ -30,101 +30,54 @@
             ],
             "physical_variant":"push_button"
         },
-        "ButtonNoConfig":{
-            "category":"Button",
-            "control_type":"selector",
-            "description":"Binary (0-1) value",
-            "identifier":"ButtonNoConfig",
-            "inputs":[
-                {
-                    "description":"switch to previous or next state",
-                    "interface":"fixed_step"
-                },
-                {
-                    "description":"set position",
-                    "interface":"set_state",
-                    "max_value":1
-                },
-                {
-                    "argument":"TOGGLE",
-                    "description":"Toggle switch state",
-                    "interface":"action"
-                }
-            ],
-            "outputs":[
-                {
-                    "description":"0 if button is unpressed, 1 if button is pressed",
-                    "max_value":1,
-                    "type":"integer"
-                }
-            ],
-            "physical_variant":"push_button"
-        },
-        "ButtonConfigNeedsClamp":{
-            "category":"Button",
-            "control_type":"selector",
-            "description":"Analogue (0-65535) value with a backing config in ButtonTests.json",
-            "identifier":"ButtonConfigNeedsClamp",
-            "inputs":[
-                {
-                    "description":"switch to previous or next state",
-                    "interface":"fixed_step"
-                },
-                {
-                    "description":"set position",
-                    "interface":"set_state",
-                    "max_value":65535
-                },
-                {
-                    "argument":"TOGGLE",
-                    "description":"Toggle switch state",
-                    "interface":"action"
-                }
-            ],
-            "outputs":[
-                {
-                    "description":"0 if button is unpressed, 65535 if button is pressed",
-                    "max_value":65535,
-                    "type":"integer"
-                }
-            ],
-            "physical_variant":"push_button"
-        },
-        "ButtonNoConfigNeedsClamp":{
-            "category":"Button",
-            "control_type":"selector",
-            "description":"Analogue (0-65535) value",
-            "identifier":"ButtonNoConfigNeedsClamp",
-            "inputs":[
-                {
-                    "description":"switch to previous or next state",
-                    "interface":"fixed_step"
-                },
-                {
-                    "description":"set position",
-                    "interface":"set_state",
-                    "max_value":65535
-                },
-                {
-                    "argument":"TOGGLE",
-                    "description":"Toggle switch state",
-                    "interface":"action"
-                }
-            ],
-            "outputs":[
-                {
-                    "description":"0 if button is unpressed, 65535 if button is pressed",
-                    "max_value":65535,
-                    "type":"integer"
-                }
-            ],
-            "physical_variant":"push_button"
-        },
-        "ButtonLimitedRotary":{
+        "FixedStepRotary":{
             "category":"Button",
             "control_type":"selector",
             "description":"UHF Radio 0.025 MHz Frequency Selector Knob",
-            "identifier":"ButtonLimitedRotary",
+            "identifier":"FixedStepRotary",
+            "inputs":[
+                {
+                    "description":"switch to previous or next state",
+                    "interface":"fixed_step"
+                }
+            ],
+            "momentary_positions":"none",
+            "outputs":[
+                {
+                    "description":"selector position",
+                    "max_value":4,
+                    "type":"integer"
+                }
+            ],
+            "physical_variant":"limited_rotary"
+        },
+        "SetStateRotary":{
+            "category":"Button",
+            "control_type":"selector",
+            "description":"UHF Radio 0.025 MHz Frequency Selector Knob",
+            "identifier":"SetStateRotary",
+            "inputs":[
+                {
+                    "description":"set position",
+                    "interface":"set_state",
+                    "max_value":4
+                }
+            ],
+            "momentary_positions":"none",
+            "outputs":[
+                {
+                    "description":"selector position",
+                    "max_value":4,
+                    "type":"integer"
+                }
+            ],
+            "physical_variant":"limited_rotary"
+        },
+        "FixedStepSetStateRotary":{
+            "category":"Button",
+            "control_type":"selector",
+            "description":"UHF Radio 0.025 MHz Frequency Selector Knob",
+            "identifier":"FixedStepSetStateRotary",
             "inputs":[
                 {
                     "description":"switch to previous or next state",
@@ -146,11 +99,11 @@
             ],
             "physical_variant":"limited_rotary"
         },
-        "ButtonVariableStep":{
+        "VariableStepRotary":{
             "category":"Button",
             "control_type":"limited_dial",
             "description":"Armament Panel Lights Knob",
-            "identifier":"ButtonVariableStep",
+            "identifier":"VariableStepRotary",
             "inputs":[
                 {
                     "description":"set the position of the dial",

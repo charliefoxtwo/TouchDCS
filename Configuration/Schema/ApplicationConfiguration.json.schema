@@ -53,15 +53,6 @@
             "description": "Network configuration for TouchOSC or other OSC client.",
             "type": "object",
             "properties": {
-                "configLocations": {
-                    "description": "The directories containing *.json pertinent to OSC layout translation.",
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    },
-                    "examples": ["", "/layouts/configs/", "C:/configs/"]
-                },
-
                 "devices": {
                     "description": "Any OSC devices you want to connect.",
                     "type": "array",

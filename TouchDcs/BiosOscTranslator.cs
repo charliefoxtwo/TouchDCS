@@ -194,6 +194,7 @@ namespace TouchDcs
 
             var setStateInput = inputs.OfType<InputSetState>().FirstOrDefault();
             var fixedStepInput = inputs.OfType<InputFixedStep>().FirstOrDefault();
+            var variableStepInput = inputs.OfType<InputVariableStep>().FirstOrDefault();
             if (setStateInput != null && floatData.HasValue)
             {
                 _biosSender.Send(address, floatData.Value.ToString());
@@ -203,6 +204,23 @@ namespace TouchDcs
                 if (floatData == 0) return; // button release, don't do anything
 
                 _biosSender.Send(address, stringData ?? (floatData < 0 ? InputFixedStep.Decrement : InputFixedStep.Increment));
+            }
+            else if (variableStepInput != null && !(floatData is null && stringData is null))
+            {
+                if (floatData == 0) return; // button release, don't do anything
+                bool stringPositive = false;
+                if (stringData != null)
+                {
+                    if (stringData == InputFixedStep.Increment) stringPositive = true;
+                    else if (stringData != InputFixedStep.Decrement)
+                    {
+                        _log.Error($"Unrecognized string value {stringData} for {address}");
+                    }
+                }
+
+                var amount = floatData ?? (stringPositive ? 1 : -1) * variableStepInput.SuggestedStep;
+                var stringifiedAmount = $"{(amount < 0 ? string.Empty : "+")}{amount}";
+                _biosSender.Send(address, stringifiedAmount);
             }
             else
             {

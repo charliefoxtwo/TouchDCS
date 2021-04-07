@@ -57,22 +57,16 @@ namespace TouchDcsTest.TranslatorTests
             public ToOscVerifier(IBiosTranslator translator, Mock<IOscSendClient> oscSender) =>
                 (_translator, _oscSender) = (translator, oscSender);
 
-            public void Exactly(string key, float expected, int data)
+            public void Exactly(string key, int value)
             {
-                _translator.FromBios(key, data);
-                _oscSender.Verify(s => s.Send(OscCodeFor(key), expected));
+                _translator.FromBios(key, value);
+                _oscSender.Verify(s => s.Send(OscCodeFor(key), value));
             }
 
-            public void Exactly(string key, string expected, string data)
+            public void Exactly(string key, string value)
             {
-                _translator.FromBios(key, data);
-                _oscSender.Verify(s => s.Send(OscCodeFor(key), expected));
-            }
-
-            public void Approximate(string key, float expected, int data, float delta = 0.01f)
-            {
-                _translator.FromBios(key, data);
-                _oscSender.Verify(s => s.Send(OscCodeFor(key), It.IsInRange(expected - delta, expected + delta, Range.Inclusive)));
+                _translator.FromBios(key, value);
+                _oscSender.Verify(s => s.Send(OscCodeFor(key), value));
             }
 
             private static string OscCodeFor(in string address) => $"/{address}";
@@ -86,15 +80,20 @@ namespace TouchDcsTest.TranslatorTests
             public ToBiosVerifier(IOscTranslator translator, Mock<IBiosSendClient> biosSender) =>
                 (_translator, _biosSender) = (translator, biosSender);
 
-            public void Exactly(string oscAddress, int expected, float data, string? biosAddress = null)
+            public void Exactly(string address, int value)
             {
-                Exactly(oscAddress, expected.ToString(), data, biosAddress);
+                Exactly(address, value.ToString(), value);
             }
 
-            public void Exactly(string oscAddress, string expected, float data, string? biosAddress = null)
+            public void Exactly(string address, string value)
             {
-                _translator.FromOsc(IpAddress, oscAddress, data);
-                _biosSender.Verify(s => s.Send(biosAddress ?? oscAddress, expected));
+                Exactly(address, value, value);
+            }
+
+            public void Exactly<TValue>(string address, string expected, TValue value)
+            {
+                _translator.FromOsc(IpAddress, address, value);
+                _biosSender.Verify(s => s.Send(address, expected));
             }
         }
     }

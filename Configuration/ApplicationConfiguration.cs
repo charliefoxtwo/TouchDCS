@@ -74,10 +74,6 @@ namespace Configuration
                 },
                 Osc = new OscConfiguration
                 {
-                    ConfigLocations = new List<string>
-                    {
-                        "configurations/",
-                    },
                     Devices = new List<EndpointConfiguration>
                     {
                         new EndpointConfiguration
