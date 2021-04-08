@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <OutputType>Exe</OutputType>
         <TargetFramework>net5.0</TargetFramework>
         <Nullable>enable</Nullable>
         <CopyOutputSymbolsToPublishDirectory>false</CopyOutputSymbolsToPublishDirectory>
@@ -14,7 +13,6 @@
     <ItemGroup>
       <ProjectReference Include="..\DcsBiosCommunicator\DcsBiosCommunicator.csproj" />
       <ProjectReference Include="..\OscCommunicator\OscCommunicator.csproj" />
-      <ProjectReference Include="..\OscConfiguration\OscConfiguration.csproj" />
     </ItemGroup>
 
     <ItemGroup>

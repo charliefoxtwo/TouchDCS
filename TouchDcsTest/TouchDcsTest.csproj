@@ -16,10 +16,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\TouchDcs\TouchDcs.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
         <None Remove="Resources\**" />
         <Content Include="Resources\**">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -40,6 +36,10 @@
 <!--      <Content Include="Resources\OscConfigurations\TransformIntegerTests.json">-->
 <!--        <CopyToOutputDirectory>Always</CopyToOutputDirectory>-->
 <!--      </Content>-->
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\TouchDcsWorker\TouchDcsWorker.csproj" />
     </ItemGroup>
 
 </Project>

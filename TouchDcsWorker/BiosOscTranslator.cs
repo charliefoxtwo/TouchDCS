@@ -6,7 +6,7 @@ using Core.Logging;
 using DcsBiosCommunicator;
 using OscCommunicator;
 
-namespace TouchDcs
+namespace TouchDcsWorker
 {
     public class BiosOscTranslator : IBiosTranslator, IOscTranslator
     {

@@ -1,41 +1,17 @@
 ﻿using System;
-using System.Runtime.InteropServices;
+using Core.Logging;
 
-namespace Core.Logging
+namespace TouchDcsConsole.Logging
 {
     public class Acacia : ILogger
     {
         private readonly string _name;
-        private readonly LogLevel _outputLevel;
-        private static volatile bool _consolePrepped = false;
-        private static object _prepLock = new();
+        private volatile LogLevel _outputLevel;
 
-        public Acacia(in string name, in LogLevel outputLevel = LogLevel.Warn)
+        public Acacia(in string name,  in LogLevel outputLevel = LogLevel.Warn)
         {
             _name = name;
             _outputLevel = outputLevel;
-
-            if (!_consolePrepped)
-            {
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                {
-                    lock (_prepLock)
-                    {
-                        try
-                        {
-                            WindowsCustom.EnableWindowsAnsiSequences();
-                        }
-                        catch
-                        {
-                            // suppress this exception, if it fails who cares.
-                        }
-
-                        _consolePrepped = true;
-                    }
-                }
-
-                _consolePrepped = true;
-            }
         }
 
         public void Trace(string message)
@@ -67,6 +43,11 @@ namespace Core.Logging
         public void Fatal(string message)
         {
             WriteFor(LogLevel.Fatal, message);
+        }
+
+        public void SetLogLevel(LogLevel level)
+        {
+            _outputLevel = level;
         }
 
         private void WriteFor(in LogLevel level, in string message)

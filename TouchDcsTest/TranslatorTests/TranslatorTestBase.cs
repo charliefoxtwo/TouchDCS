@@ -8,7 +8,7 @@ using DcsBiosCommunicator;
 using Moq;
 using NUnit.Framework;
 using OscCommunicator;
-using TouchDcs;
+using TouchDcsWorker;
 using Range = Moq.Range;
 
 namespace TouchDcsTest.TranslatorTests

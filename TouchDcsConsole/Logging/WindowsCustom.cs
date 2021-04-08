@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace Core.Logging
+namespace TouchDcsConsole.Logging
 {
     public static class WindowsCustom
     {

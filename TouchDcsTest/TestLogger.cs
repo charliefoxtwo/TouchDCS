@@ -42,5 +42,9 @@ namespace TouchDcsTest
         {
             OnFatal?.Invoke(message);
         }
+
+        public void SetLogLevel(LogLevel level)
+        {
+        }
     }
 }
