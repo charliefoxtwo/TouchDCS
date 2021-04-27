@@ -3,7 +3,7 @@ using TouchDcsTest.TranslatorTests.Keys;
 
 namespace TouchDcsTest.TranslatorTests
 {
-    public class FromBiosTests : TranslatorTestBase<ButtonTranslatorKeys>
+    public class FromBiosTests : TranslatorTestBase
     {
         public FromBiosTests() : base("ButtonTests") { }
 
@@ -15,7 +15,7 @@ namespace TouchDcsTest.TranslatorTests
         [TestCase(-1)]
         public void Integer_FromBios(int value)
         {
-            OscVerifier.Exactly(Keys.SetStateButton, value);
+            OscVerifier.Exactly(ButtonTranslatorKeys.SetStateButton, value);
         }
 
         [Theory]
@@ -25,7 +25,7 @@ namespace TouchDcsTest.TranslatorTests
         [TestCase("42")]
         public void String_FromBios(string value)
         {
-            OscVerifier.Exactly(Keys.SetStateButton, value);
+            OscVerifier.Exactly(ButtonTranslatorKeys.SetStateButton, value);
         }
     }
 }

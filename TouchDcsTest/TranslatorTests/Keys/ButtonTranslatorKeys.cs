@@ -1,11 +1,11 @@
 ﻿namespace TouchDcsTest.TranslatorTests.Keys
 {
-    public class ButtonTranslatorKeys : ITranslatorTest
+    public static class ButtonTranslatorKeys
     {
-        public string SetStateButton { get; } = "SetStateButton";
-        public string FixedStepRotary { get; } = "FixedStepRotary";
-        public string SetStateRotary { get; } = "SetStateRotary";
-        public string FixedStepSetStateRotary { get; } = "FixedStepSetStateRotary";
-        public string VariableStepRotary { get; } = "VariableStepRotary";
+        public const string SetStateButton = "SetStateButton";
+        public const string FixedStepRotary = "FixedStepRotary";
+        public const string SetStateRotary = "SetStateRotary";
+        public const string FixedStepSetStateRotary = "FixedStepSetStateRotary";
+        public const string VariableStepRotary = "VariableStepRotary";
     }
 }

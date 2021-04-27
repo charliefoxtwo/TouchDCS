@@ -9,21 +9,17 @@ using Moq;
 using NUnit.Framework;
 using OscCommunicator;
 using TouchDcsWorker;
-using Range = Moq.Range;
 
 namespace TouchDcsTest.TranslatorTests
 {
-    public abstract class TranslatorTestBase<T> where T : ITranslatorTest, new()
+    public abstract class TranslatorTestBase
     {
         private const string IpAddress = "1.1.1.1";
         protected ToBiosVerifier BiosVerifier { get; }
         protected ToOscVerifier OscVerifier { get; }
 
-        protected T Keys { get; }
-
         protected TranslatorTestBase(string moduleName)
         {
-            Keys = new T();
             var logger = new TestLogger();
             logger.OnDebug += Console.WriteLine;
             logger.OnInfo += Console.WriteLine;

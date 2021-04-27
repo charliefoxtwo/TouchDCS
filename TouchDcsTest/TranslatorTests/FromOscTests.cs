@@ -4,7 +4,7 @@ using TouchDcsTest.TranslatorTests.Keys;
 
 namespace TouchDcsTest.TranslatorTests
 {
-    public class FromOscTests : TranslatorTestBase<ButtonTranslatorKeys>
+    public class FromOscTests : TranslatorTestBase
     {
         public FromOscTests() : base("ButtonTests") { }
 
@@ -15,42 +15,42 @@ namespace TouchDcsTest.TranslatorTests
         [TestCase(-1)]
         public void Button_FromOsc(int value)
         {
-            BiosVerifier.Exactly(Keys.SetStateButton, value);
+            BiosVerifier.Exactly(ButtonTranslatorKeys.SetStateButton, value);
         }
 
         [TestCase(InputFixedStep.Increment, 1)]
         [TestCase(InputFixedStep.Decrement, -1)]
         public void Button_FromOsc_FixedStepRotary_IntIn(string expected, int valueIn)
         {
-            BiosVerifier.Exactly(Keys.FixedStepRotary, expected, valueIn);
+            BiosVerifier.Exactly(ButtonTranslatorKeys.FixedStepRotary, expected, valueIn);
         }
 
         [TestCase(0)]
         [TestCase(2)]
         public void Button_FromOsc_SetStateRotary(int value)
         {
-            BiosVerifier.Exactly(Keys.SetStateRotary, value);
+            BiosVerifier.Exactly(ButtonTranslatorKeys.SetStateRotary, value);
         }
 
         [TestCase(InputFixedStep.Increment)]
         [TestCase(InputFixedStep.Decrement)]
         public void Button_FromOsc_FixedStepSetStateRotary_StringIn(string value)
         {
-            BiosVerifier.Exactly(Keys.FixedStepSetStateRotary, value);
+            BiosVerifier.Exactly(ButtonTranslatorKeys.FixedStepSetStateRotary, value);
         }
 
         [TestCase(1)]
         [TestCase(-1)]
         public void Button_FromOsc_FixedStepSetStateRotary_IntIn(int value)
         {
-            BiosVerifier.Exactly(Keys.FixedStepSetStateRotary, value);
+            BiosVerifier.Exactly(ButtonTranslatorKeys.FixedStepSetStateRotary, value);
         }
 
         [TestCase("+3200", InputFixedStep.Increment)]
         [TestCase("-3200", InputFixedStep.Decrement)]
         public void Button_FromOsc_VariableStepRotary(string expected, string valueIn)
         {
-            BiosVerifier.Exactly(Keys.VariableStepRotary, expected, valueIn);
+            BiosVerifier.Exactly(ButtonTranslatorKeys.VariableStepRotary, expected, valueIn);
         }
     }
 }
