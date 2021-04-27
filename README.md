@@ -1,6 +1,6 @@
 # Features
 
- - Build custom control panels to use on your phone or tablet
+ - Build custom control panels to use on your phone or tablet (all major operating systems supported!)
  - Two-way communication with DCS-BIOS
  - Multi-device support
 
@@ -13,8 +13,7 @@
 3. [.NET 5 **Runtime**](https://dotnet.microsoft.com/download/dotnet/5.0) (SDK/AspNetCore Runtimes not required)
 
 ### Download the latest version of TouchDCS
-You can get the latest version in the [releases](https://github.com/charliefoxtwo/TouchDCS/releases) section. Download `TouchDcs.zip` and extract it wherever you wish.
-
+You can get the latest version [here](https://github.com/charliefoxtwo/TouchDCS/releases/latest). Unzip wherever you wish to run - no install required. I recommend unzipping into a folder just for TouchDCS, since it also requires a configuration file located in the same directory.
 ### Launch TouchDCS
 When launching for the first time:
 - a modal may pop up saying **Windows protected your PC**. Click _More info_, then click **Run anyway**. Don't worry, TouchDCS is guaranteed to be 99.9% virus free!
@@ -44,3 +43,8 @@ Using the TouchOSC Editor on your computer, you can create your own layouts.
 
 ### Found a bug?
 Probably. This thing needs a lot of work. Open an issue in the Issues section and let's get it fixed.
+
+# Sample images
+![hornet ufc](doc/img/hornetufc.jpg)
+![hornet ifei](doc/img/hornetifei.jpg)
+![huey radios](doc/img/huey1.jpg)
