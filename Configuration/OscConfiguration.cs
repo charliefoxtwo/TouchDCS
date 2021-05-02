@@ -5,6 +5,6 @@ namespace Configuration
     // ReSharper disable once ClassNeverInstantiated.Global
     public class OscConfiguration
     {
-        public List<EndpointConfiguration> Devices { get; set; } = null!;
+        public HashSet<EndpointConfiguration> Devices { get; set; } = null!;
     }
 }

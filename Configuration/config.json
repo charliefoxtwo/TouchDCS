@@ -23,14 +23,9 @@
     "osc": {
         "devices": [
             {
-                "ipAddress": "192.168.50.90",
+                "ipAddress": "YOUR DEVICE HERE. DO NOT COMMIT.",
                 "sendPort": 9003,
                 "receivePort": 9002
-            },
-            {
-                "ipAddress": "127.0.0.1",
-                "sendPort": 9005,
-                "receivePort": 9004
             }
         ]
     }

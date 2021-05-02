@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Core;
 using Core.Logging;
 using Microsoft.Extensions.Configuration;
@@ -16,8 +17,7 @@ namespace Configuration
         [JsonProperty("$schema")] public string Schema { get; set; } = null!;
         public DcsBiosConfiguration DcsBios { get; set; } = null!;
         public OscConfiguration Osc { get; set; } = null!;
-        public List<string> CommonModules { get; set; } = null!;
-
+        public HashSet<string>? CommonModules { get; set; }
         public LogLevel LogLevel { get; set; }
 
 
@@ -32,6 +32,8 @@ namespace Configuration
         {
             if (_configuration is null)
             {
+                var baseConfiguration = DefaultConfiguration();
+
                 var configPath = PathHelpers.FullOrRelativePath(ConfigLocation);
                 if (!File.Exists(configPath))
                 {
@@ -39,7 +41,8 @@ namespace Configuration
                 }
 
                 var builder = new ConfigurationBuilder().AddJsonFile(PathHelpers.FullOrRelativePath(ConfigLocation));
-                _configuration = builder.Build().Get<ApplicationConfiguration>();
+                baseConfiguration.MergeWith(builder.Build().Get<ApplicationConfiguration>());
+                _configuration = baseConfiguration;
             }
 
             return _configuration;
@@ -47,11 +50,74 @@ namespace Configuration
 
         public static void CreateNewConfiguration()
         {
-            var config = new ApplicationConfiguration
+            var config = DefaultConfiguration();
+            config.Osc.Devices.Add(new EndpointConfiguration
+            {
+                IpAddress = "YOUR TABLET IP HERE",
+                SendPort = 9000,
+                ReceivePort = 8000,
+            });
+            config.CommonModules = null;
+            config.DcsBios.Export = null;
+
+            using var fs = File.Create(PathHelpers.FullOrRelativePath(ConfigLocation));
+            using var sw = new StreamWriter(fs);
+            sw.Write(JsonConvert.SerializeObject(config, new JsonSerializerSettings
+            {
+                Converters = new List<JsonConverter> { new StringEnumConverter() },
+                ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                Formatting = Formatting.Indented,
+                NullValueHandling = NullValueHandling.Ignore,
+            }));
+        }
+
+        private void MergeWith(ApplicationConfiguration otherConfiguration)
+        {
+            // just overwrite the config locations
+            if (otherConfiguration.DcsBios.ConfigLocations.Any())
+            {
+                DcsBios.ConfigLocations = otherConfiguration.DcsBios.ConfigLocations;
+            }
+
+            // overwrite the bios export settings
+            if (otherConfiguration.DcsBios.Export != null)
+            {
+                DcsBios.Export = otherConfiguration.DcsBios.Export;
+            }
+
+            // merge devices
+            foreach (var device in otherConfiguration.Osc.Devices)
+            {
+                Osc.Devices.Add(device);
+            }
+
+            // merge common modules
+            if (otherConfiguration.CommonModules != null)
+            {
+                if (CommonModules is null)
+                {
+                    CommonModules = otherConfiguration.CommonModules;
+                }
+                else
+                {
+                    foreach (var module in otherConfiguration.CommonModules)
+                    {
+                        CommonModules.Add(module);
+                    }
+                }
+            }
+
+            // just overwrite the log level
+            LogLevel = otherConfiguration.LogLevel;
+        }
+
+        private static ApplicationConfiguration DefaultConfiguration()
+        {
+            return new ApplicationConfiguration
             {
                 Schema = "https://raw.githubusercontent.com/charliefoxtwo/TouchDCS/main/Configuration/Schema/ApplicationConfiguration.json.schema",
                 LogLevel = LogLevel.Info,
-                CommonModules = new List<string>
+                CommonModules = new HashSet<string>
                 {
                     "CommonData",
                     "MetadataStart",
@@ -60,7 +126,7 @@ namespace Configuration
                 },
                 DcsBios = new DcsBiosConfiguration
                 {
-                    ConfigLocations = new List<string>
+                    ConfigLocations = new HashSet<string>
                     {
                         @"%userprofile%/Saved Games/DCS.openbeta/Scripts/DCS-BIOS/doc/json/",
                         @"%appdata%/DCS-BIOS/control-reference/json/",
@@ -74,26 +140,9 @@ namespace Configuration
                 },
                 Osc = new OscConfiguration
                 {
-                    Devices = new List<EndpointConfiguration>
-                    {
-                        new EndpointConfiguration
-                        {
-                            IpAddress = "YOUR TABLET IP HERE",
-                            SendPort = 9000,
-                            ReceivePort = 8000,
-                        }
-                    }
+                    Devices = new HashSet<EndpointConfiguration>()
                 }
             };
-
-            using var fs = File.Create(PathHelpers.FullOrRelativePath(ConfigLocation));
-            using var sw = new StreamWriter(fs);
-            sw.Write(JsonConvert.SerializeObject(config, new JsonSerializerSettings
-            {
-                Converters = new List<JsonConverter> { new StringEnumConverter() },
-                ContractResolver = new CamelCasePropertyNamesContractResolver(),
-                Formatting = Formatting.Indented,
-            }));
         }
     }
 }

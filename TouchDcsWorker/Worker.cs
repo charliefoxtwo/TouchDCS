@@ -36,7 +36,7 @@ namespace TouchDcsWorker
             var aircraftBiosConfigs = await GetAircraftBiosConfigurations(appConfig);
 
             var translator = new BiosOscTranslator(oscSenders.ToList(), biosUdpClient, aircraftBiosConfigs,
-                appConfig.CommonModules.ToHashSet(), log);
+                appConfig.CommonModules ?? new HashSet<string>(), log);
 
             var biosListener = new BiosListener(biosUdpClient, translator, log);
             foreach (var config in aircraftBiosConfigs)
@@ -98,6 +98,13 @@ namespace TouchDcsWorker
 
         private static BiosUdpClient SetUpBiosUdpClient(ApplicationConfiguration appConfig, ILogger log)
         {
+            if (appConfig.DcsBios.Export is null)
+            {
+                log.Error("No bios export ip specified. Exiting...");
+                throw new ArgumentException("Application configuration must have dcs bios export ip",
+                    nameof(appConfig));
+            }
+
             var client = new BiosUdpClient(appConfig.DcsBios.Export.Ip, appConfig.DcsBios.Export.SendPort,
                 appConfig.DcsBios.Export.ReceivePort, log);
             client.OpenConnection();

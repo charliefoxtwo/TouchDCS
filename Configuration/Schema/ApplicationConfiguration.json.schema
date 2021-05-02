@@ -63,7 +63,7 @@
                 }
             },
 
-            "required": ["devices", "configLocations"],
+            "required": ["devices"],
             "additionalProperties": false
         },
 
@@ -89,14 +89,14 @@
                 }
             },
 
-            "required": ["export", "configLocations"],
+            "required": ["configLocations"],
             "additionalProperties": false
         },
 
         "logLevel": {
             "description": "The level to log at.",
             "type": "string",
-            "enum": ["DEBUG", "INFO", "WARN", "ERROR", "FATAL"]
+            "enum": ["DEBUG", "INFO", "WARN", "ERROR", "FATAL", "Debug", "Info", "Warn", "Error", "Fatal"]
         }
     },
 
