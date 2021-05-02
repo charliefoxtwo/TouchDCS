@@ -1,25 +1,12 @@
-﻿{
+{
     "$schema": "https://raw.githubusercontent.com/charliefoxtwo/TouchDCS/main/Configuration/Schema/ApplicationConfiguration.json.schema",
     "logLevel": "INFO",
-    "commonModules": [
-        "CommonData",
-        "MetadataStart",
-        "MetadataEnd",
-        "NS430"
-    ],
     "dcsBios": {
         "configLocations": [
             "%userprofile%/Saved Games/DCS.openbeta/Scripts/DCS-BIOS/doc/json/",
             "%appdata%/DCS-BIOS/control-reference/json/"
-        ],
-
-        "export": {
-            "ipAddress": "239.255.50.10",
-            "sendPort": 7778,
-            "receivePort": 5010
-        }
+        ]
     },
-
     "osc": {
         "devices": [
             {

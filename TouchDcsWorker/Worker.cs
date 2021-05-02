@@ -36,7 +36,7 @@ namespace TouchDcsWorker
             var aircraftBiosConfigs = await GetAircraftBiosConfigurations(appConfig);
 
             var translator = new BiosOscTranslator(oscSenders.ToList(), biosUdpClient, aircraftBiosConfigs,
-                appConfig.CommonModules ?? new HashSet<string>(), log);
+                appConfig.CommonModules ?? new HashSet<string>(), appConfig.Aliases, log);
 
             var biosListener = new BiosListener(biosUdpClient, translator, log);
             foreach (var config in aircraftBiosConfigs)

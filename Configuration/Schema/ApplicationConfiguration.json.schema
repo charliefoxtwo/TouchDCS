@@ -42,12 +42,20 @@
 
     "properties": {
         "commonModules": {
-            "description": "When attempting to find the current aircraft, don't consider data from these entries. ",
+            "description": "When attempting to find the current aircraft, don't consider data from these entries.",
             "type": "array",
             "items": {
                 "type": "string"
             },
             "examples": [ ["CommonData", "MetadataStart", "MetadataEnd", "NS430"] ]
+        },
+        "aliases": {
+            "description": "When attempting to find the current aircraft, consider these entries to be the same.",
+            "type": "object",
+            "additionalProperties": {
+                "type": "array"
+            },
+            "examples": [{ "A-10C": ["A-10C_2"] }]
         },
         "osc": {
             "description": "Network configuration for TouchOSC or other OSC client.",

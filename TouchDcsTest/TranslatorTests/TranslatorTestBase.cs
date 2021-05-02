@@ -31,7 +31,7 @@ namespace TouchDcsTest.TranslatorTests
             var biosSender = new Mock<IBiosSendClient>();
             var translator = new BiosOscTranslator(new List<IOscSendClient> { oscSender.Object },
                 biosSender.Object, BuildBiosConfigurations(), new HashSet<string>(),
-                logger);
+                null, logger);
 
             BiosVerifier = new ToBiosVerifier(translator, biosSender);
             OscVerifier = new ToOscVerifier(translator, oscSender);
