@@ -170,6 +170,8 @@ namespace TouchDcsWorker
 
         public void FromBios<T>(string biosCode, T data)
         {
+            if (data is null) return;
+
             // if we don't recognize this, just gtfo
             if (biosCode == BiosListener.AircraftNameBiosCode && data is string aircraftName && aircraftName != _activeAircraft)
             {
