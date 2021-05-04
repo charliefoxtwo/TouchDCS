@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Text;
+using System.Linq;
 
 namespace DcsBiosCommunicator.DataParsers
 {
@@ -44,7 +44,7 @@ namespace DcsBiosCommunicator.DataParsers
             var done = false;
             if (Address <= address && address < Address + Length)
             {
-                var dataBytes = Encoding.UTF8.GetString(BitConverter.GetBytes(data));
+                var dataBytes = BitConverter.GetBytes(data).Select(d => (char)d).Take(2).ToArray();
                 SetCharacter(address - Address, dataBytes[0]);
                 if (address - Address + 1 == Length) done = true;
                 if (Address + Length > address + 1)
