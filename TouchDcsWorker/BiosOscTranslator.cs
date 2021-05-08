@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
-using BiosConfiguration;
-using Core.Logging;
-using DcsBiosCommunicator;
+using DcsBios.Communicator;
+using DcsBios.Communicator.Configuration;
+using Microsoft.Extensions.Logging;
 using OscCommunicator;
 
 namespace TouchDcsWorker
@@ -18,7 +18,7 @@ namespace TouchDcsWorker
 
         private string? _activeAircraft;
 
-        private readonly ILogger _log;
+        private readonly ILogger<BiosOscTranslator> _log;
 
         /// <summary>
         /// IP Address -> client
@@ -42,7 +42,7 @@ namespace TouchDcsWorker
 
         public BiosOscTranslator(in List<IOscSendClient> oscSenders, in IBiosSendClient biosSender,
             IEnumerable<AircraftBiosConfiguration> biosConfigs, in HashSet<string> nonAircraftModules,
-            in Dictionary<string, HashSet<string>>? aliases, in ILogger logger)
+            in Dictionary<string, HashSet<string>>? aliases, in ILogger<BiosOscTranslator> logger)
         {
             _oscSenders = oscSenders.ToDictionary(s => s.DeviceIpAddress, s => s);
             _biosSender = biosSender;
@@ -68,7 +68,7 @@ namespace TouchDcsWorker
 
                     if (!aircraftBiosInputs.TryAdd(control.Identifier, controlBiosInputInfo))
                     {
-                        _log.Warn($"Duplicate key {{{control.Identifier}}} found for aircraft {{{aircraftConfig.AircraftName}}}. Skipping...");
+                        _log.LogWarning($"Duplicate key {{{control.Identifier}}} found for aircraft {{{aircraftConfig.AircraftName}}}. Skipping...");
                     }
                 }
 
@@ -93,7 +93,7 @@ namespace TouchDcsWorker
             // remove the leading slash from the address
             address = address.TrimStart('/');
 
-            _log.Debug($"processing OSC data {{{address} {data}}}");
+            _log.LogDebug($"processing OSC data {{{address} {data}}}");
 
             // FromBios will set the active aircraft.
             // check to see if this is an aircraft input
@@ -102,7 +102,7 @@ namespace TouchDcsWorker
                 // if not, maybe it's a module input?
                 if (!_allModuleBiosInputs.TryGetValue(address, out inputInfo))
                 {
-                    _log.Warn($"Unable to find matching DCS-BIOS command for {address} in aircraft {_activeAircraft}");
+                    _log.LogWarning($"Unable to find matching DCS-BIOS command for {address} in aircraft {_activeAircraft}");
                     return;
                 }
             }
@@ -122,7 +122,7 @@ namespace TouchDcsWorker
                     stringData = s;
                     break;
                 default:
-                    _log.Error($"unable to convert data {{{data}}} to to any known type.");
+                    _log.LogError($"unable to convert data {{{data}}} to to any known type.");
                     return;
             }
 
@@ -150,7 +150,7 @@ namespace TouchDcsWorker
                     if (stringData == InputFixedStep.Increment) stringPositive = true;
                     else if (stringData != InputFixedStep.Decrement)
                     {
-                        _log.Error($"Unrecognized string value {stringData} for {address}");
+                        _log.LogError($"Unrecognized string value {stringData} for {address}");
                     }
                 }
 
@@ -160,7 +160,7 @@ namespace TouchDcsWorker
             }
             else
             {
-                _log.Error($"input type {{set_state}} not found for control {address}");
+                _log.LogError($"input type {{set_state}} not found for control {address}");
             }
         }
 

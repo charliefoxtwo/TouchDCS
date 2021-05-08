@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using BiosConfiguration;
-using DcsBiosCommunicator;
+using DcsBios.Communicator;
+using DcsBios.Communicator.Configuration;
+using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
 using OscCommunicator;
@@ -20,12 +21,7 @@ namespace TouchDcsTest.TranslatorTests
 
         protected TranslatorTestBase(string moduleName)
         {
-            var logger = new TestLogger();
-            logger.OnDebug += Console.WriteLine;
-            logger.OnInfo += Console.WriteLine;
-            logger.OnWarn += Assert.Fail;
-            logger.OnError += Assert.Fail;
-            logger.OnFatal += Assert.Fail;
+            var logger = LoggerFactory.Create(c => c.SetMinimumLevel(LogLevel.Debug)).CreateLogger<BiosOscTranslator>();
             var oscSender = new Mock<IOscSendClient>();
             oscSender.SetupGet(c => c.DeviceIpAddress).Returns(IpAddress);
             var biosSender = new Mock<IBiosSendClient>();

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Net;
-using Core.Logging;
+using Microsoft.Extensions.Logging;
 using Rug.Osc;
 
 namespace OscCommunicator

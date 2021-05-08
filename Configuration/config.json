@@ -1,6 +1,6 @@
-{
+﻿{
     "$schema": "https://raw.githubusercontent.com/charliefoxtwo/TouchDCS/main/Configuration/Schema/ApplicationConfiguration.json.schema",
-    "logLevel": "INFO",
+    "logLevel": "Information",
     "dcsBios": {
         "configLocations": [
             "%userprofile%/Saved Games/DCS.openbeta/Scripts/DCS-BIOS/doc/json/",
@@ -10,7 +10,7 @@
     "osc": {
         "devices": [
             {
-                "ipAddress": "YOUR DEVICE HERE. DO NOT COMMIT.",
+                "ipAddress": "192.168.50.90",
                 "sendPort": 9003,
                 "receivePort": 9002
             }

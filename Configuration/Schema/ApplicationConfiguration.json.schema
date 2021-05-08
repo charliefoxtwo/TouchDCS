@@ -102,9 +102,9 @@
         },
 
         "logLevel": {
-            "description": "The level to log at.",
+            "description": "The level to log at. Logging at Trace is highly discouraged.",
             "type": "string",
-            "enum": ["DEBUG", "INFO", "WARN", "ERROR", "FATAL", "Debug", "Info", "Warn", "Error", "Fatal"]
+            "enum": ["Trace", "Debug", "Information", "Warning", "Error", "Critical"]
         }
     },
 

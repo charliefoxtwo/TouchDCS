@@ -1,4 +1,4 @@
-﻿using BiosConfiguration;
+﻿using DcsBios.Communicator.Configuration;
 using NUnit.Framework;
 using TouchDcsTest.TranslatorTests.Keys;
 

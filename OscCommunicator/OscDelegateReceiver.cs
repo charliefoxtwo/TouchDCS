@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Core.Logging;
+using Microsoft.Extensions.Logging;
 using Rug.Osc;
 
 namespace OscCommunicator
@@ -26,19 +26,19 @@ namespace OscCommunicator
 
         public void Connect()
         {
-            _log.Debug("Setting up OSC listener...");
+            _log.LogDebug("Setting up OSC listener...");
             _receiver.Connect();
             _delegateThread = Task.Run(() => Listener(_cts.Token), _cts.Token);
-            _log.Info("OSC listener set up.");
+            _log.LogInformation("OSC listener set up");
         }
 
         public void Close()
         {
-            _log.Debug("Shutting down OSC listener...");
+            _log.LogDebug("Shutting down OSC listener...");
             _cts.Cancel();
             _delegateThread?.Wait();
             _receiver.Close();
-            _log.Info("OSC listener shut down.");
+            _log.LogInformation("OSC listener shut down");
         }
 
         private void Listener(CancellationToken ctx)
@@ -52,7 +52,7 @@ namespace OscCommunicator
                     var packet = _receiver.Receive();
 
                     var message = (OscMessage) packet;
-                    _log.Debug($"osc message received {{{packet}}}");
+                    _log.LogDebug($"osc message received {{{packet}}}");
 
                     var results = message.ToArray();
 
@@ -71,7 +71,7 @@ namespace OscCommunicator
             }
             catch (Exception ex)
             {
-                _log.Fatal(ex.ToString());
+                _log.LogCritical(ex.ToString());
             }
         }
 

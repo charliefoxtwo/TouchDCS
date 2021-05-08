@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Core;
-using Core.Logging;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
@@ -142,7 +141,7 @@ namespace Configuration
             return new ApplicationConfiguration
             {
                 Schema = "https://raw.githubusercontent.com/charliefoxtwo/TouchDCS/main/Configuration/Schema/ApplicationConfiguration.json.schema",
-                LogLevel = LogLevel.Info,
+                LogLevel = LogLevel.Information,
                 CommonModules = new HashSet<string>
                 {
                     "CommonData",

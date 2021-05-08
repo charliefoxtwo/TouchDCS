@@ -1,6 +1,5 @@
-﻿using System.Runtime.InteropServices;
-using System.Threading.Tasks;
-using TouchDcsConsole.Logging;
+﻿using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using TouchDcsWorker;
 
 namespace TouchDcsConsole
@@ -9,20 +8,9 @@ namespace TouchDcsConsole
     {
         public static async Task Main(string[] args)
         {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                try
-                {
-                    WindowsCustom.EnableWindowsAnsiSequences();
-                }
-                catch
-                {
-                    // suppress this exception, if it fails who cares.
-                }
-            }
+            var loggerFactory = LoggerFactory.Create(b => b.SetMinimumLevel(LogLevel.Information).AddConsole());
 
-            var log = new Acacia(nameof(TouchDcsWorker));
-            await Worker.Run(log);
+            await Worker.Run(loggerFactory);
         }
     }
 }
