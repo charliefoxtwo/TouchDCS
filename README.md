@@ -1,10 +1,21 @@
-# Features
+# TouchDCS
+
+[![.NET 5 CI build](https://github.com/charliefoxtwo/TouchDCS/actions/workflows/build.yml/badge.svg?branch=develop)](https://github.com/charliefoxtwo/TouchDCS/actions/workflows/build.yml)
+[![GitHub](https://img.shields.io/github/license/charliefoxtwo/TouchDCS?style=flat-square)](LICENSE)
+[![Discord](https://img.shields.io/discord/840762843917582347?style=flat-square)](https://discord.gg/rWAF3AdsKT)
+
+TouchDCS is an interface between OSC applications (in this case, TouchOSC) and DCS (using DCS-BIOS). It allows you to take custom-built OSC layouts, and use them to control your plane in DCS!
+
+<img src="https://raw.githubusercontent.com/charliefoxtwo/TouchDCS/develop/doc/img/hornetufc.jpg" alt="" width="400" />
+<img src="https://raw.githubusercontent.com/charliefoxtwo/TouchDCS/develop/doc/img/hornetifei.jpg" alt="" width="400" />
+
+## Features
 
  - Build custom control panels to use on your phone or tablet (all major operating systems supported!)
  - Two-way communication with DCS-BIOS
  - Multi-device support
 
-# Getting Started
+## Getting Started
 ### What you'll need:
 1. DCS-BIOS ([Original](https://github.com/dcs-bios/dcs-bios) or [Flightpanels fork](https://github.com/DCSFlightpanels/dcs-bios))
 2. [TouchOSC](https://hexler.net/products/touchosc) on your phone/tablet
@@ -43,8 +54,3 @@ Using the TouchOSC Editor on your computer, you can create your own layouts.
 
 ### Found a bug?
 Probably. This thing needs a lot of work. Open an issue in the Issues section and let's get it fixed.
-
-# Sample images
-![hornet ufc](doc/img/hornetufc.jpg)
-![hornet ifei](doc/img/hornetifei.jpg)
-![huey radios](doc/img/huey1.jpg)
