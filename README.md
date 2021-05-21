@@ -4,6 +4,8 @@
 [![GitHub](https://img.shields.io/github/license/charliefoxtwo/TouchDCS?style=flat-square)](LICENSE)
 [![Discord](https://img.shields.io/discord/840762843917582347?style=flat-square)](https://discord.gg/rWAF3AdsKT)
 
+<img src="https://raw.githubusercontent.com/charliefoxtwo/TouchDCS/develop/doc/img/tap.png" alt="TouchDCS logo - a vector outline of a hand tapping a surface, with ripples emanating from the tapped location" width="150" />
+
 TouchDCS is an interface between OSC applications (in this case, TouchOSC) and DCS (using DCS-BIOS). It allows you to take custom-built OSC layouts, and use them to control your plane in DCS!
 
 <img src="https://raw.githubusercontent.com/charliefoxtwo/TouchDCS/develop/doc/img/hornetufc.jpg" alt="" width="400" />
@@ -54,3 +56,6 @@ Using the TouchOSC Editor on your computer, you can create your own layouts.
 
 ### Found a bug?
 Probably. This thing needs a lot of work. Open an issue in the Issues section and let's get it fixed.
+
+## Acknowledgements
+ - [icon](https://www.flaticon.com/authors/pixel-perfect)
