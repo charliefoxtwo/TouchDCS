@@ -20,10 +20,10 @@ TouchDCS is an interface between OSC applications (in this case, TouchOSC) and D
 ## Getting Started
 ### What you'll need:
 1. DCS-BIOS [Flightpanels fork](https://github.com/DCSFlightpanels/dcs-bios))
-3. [TouchOSC](https://hexler.net/products/touchosc) on your phone/tablet
+2. [TouchOSC](https://hexler.net/products/touchosc) on your phone/tablet
     - editor recommended as well for creating custom layouts
     - at this time, TouchOSC is $5 on the Google Play store and I have no affiliation with the app or its creators
-4. [.NET 5 **Runtime**](https://dotnet.microsoft.com/download/dotnet/5.0) (SDK/AspNetCore Runtimes not required)
+3. [.NET 5 **Runtime**](https://dotnet.microsoft.com/download/dotnet/5.0) (SDK/AspNetCore Runtimes not required)
 
 ### Download the latest version of TouchDCS
 You can get the latest version [here](https://github.com/charliefoxtwo/TouchDCS/releases/latest). Unzip wherever you wish to run - no install required. I recommend unzipping into a folder just for TouchDCS, since it also requires a configuration file located in the same directory.
