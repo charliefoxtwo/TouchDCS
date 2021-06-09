@@ -19,7 +19,7 @@ TouchDCS is an interface between OSC applications (in this case, TouchOSC) and D
 
 ## Getting Started
 ### What you'll need:
-1. DCS-BIOS ([Original](https://github.com/dcs-bios/dcs-bios) or [Flightpanels fork](https://github.com/DCSFlightpanels/dcs-bios))
+1. DCS-BIOS [Flightpanels fork](https://github.com/DCSFlightpanels/dcs-bios))
 2. [TouchOSC](https://hexler.net/products/touchosc) on your phone/tablet
     - editor recommended as well for creating custom layouts
     - at this time, TouchOSC is $5 on the Google Play store and I have no affiliation with the app or its creators
@@ -59,3 +59,9 @@ Probably. This thing needs a lot of work. Open an issue in the Issues section an
 
 ## Acknowledgements
  - [icon](https://www.flaticon.com/authors/pixel-perfect)
+
+## Troubleshooting
+- Check that you are using the DCS BIOS fork not the original.
+- In the config file the send port should be the same as the TouchOSC receive port and the config file receive port should be the same as the TouchOSC send port.
+- If you can send but not receive check that the ipadress for whatever is running TouchOSC is set in the config file.
+- To get the layout from your computer to a tablet one way is to download TouchOSC to your computer and import the layout to TouchOSC running on your computer, map it as a server and then connect to it from your tablet. (A better explanation might be needed).
