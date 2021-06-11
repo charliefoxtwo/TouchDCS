@@ -19,7 +19,7 @@ TouchDCS is an interface between OSC applications (in this case, TouchOSC) and D
 
 ## Getting Started
 ### What you'll need:
-1. DCS-BIOS [Flightpanels fork](https://github.com/DCSFlightpanels/dcs-bios))
+1. DCS-BIOS [Flightpanels fork](https://github.com/DCSFlightpanels/dcs-bios)
 2. [TouchOSC](https://hexler.net/products/touchosc) on your phone/tablet
     - editor recommended as well for creating custom layouts
     - at this time, TouchOSC is $5 on the Google Play store and I have no affiliation with the app or its creators
