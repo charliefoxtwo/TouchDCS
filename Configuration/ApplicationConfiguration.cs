@@ -59,6 +59,7 @@ namespace Configuration
             });
             config.CommonModules = null;
             config.DcsBios.Export = null;
+            config.Aliases = null;
 
             using var fs = File.Create(PathHelpers.FullOrRelativePath(ConfigLocation));
             using var sw = new StreamWriter(fs);
