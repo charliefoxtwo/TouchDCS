@@ -2,7 +2,7 @@
 {
     public interface IOscSendClient
     {
-        void Send(string address, object data);
+        bool Send(string address, object data);
         string DeviceIpAddress { get; }
     }
 }

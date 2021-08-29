@@ -18,10 +18,29 @@ namespace OscCommunicator
             DeviceIpAddress = deviceIpAddress.ToString();
         }
 
-        public void Send(string address, object data)
+        /// <summary>
+        /// Attempts to send OSC data to the specified address.
+        /// </summary>
+        /// <param name="address">The address to which data should be sent.</param>
+        /// <param name="data">The data to send to the address.</param>
+        /// <returns>Boolean value indicating success. False indicates an exception was thrown.</returns>
+        public bool Send(string address, object data)
         {
-            var message = new OscMessage(address, data);
+            OscMessage message;
+
+            try
+            {
+                message = new OscMessage(address, data);
+            }
+            catch (ArgumentException ex)
+            {
+                _log.LogError("Exception encountered while attempting to send {Data} to {Address}: {Message}", data,
+                    address, ex.Message);
+                return false;
+            }
+
             _sender.Send(message);
+            return true;
         }
 
         public void Connect()

@@ -38,6 +38,8 @@ namespace TouchDcsWorker
 
         private readonly Dictionary<string, string> _aircraftAliases = new();
 
+        private readonly HashSet<string> _badAddresses = new();
+
         private readonly IBiosSendClient _biosSender;
 
         public BiosOscTranslator(in List<IOscSendClient> oscSenders, in IBiosSendClient biosSender,
@@ -64,11 +66,20 @@ namespace TouchDcsWorker
 
                 foreach (var control in aircraftConfig.Values.SelectMany(category => category.Values))
                 {
+                    if (!$"/{control.Identifier}".IsValidOscAddress())
+                    {
+                        _log.LogWarning("Invalid OSC address {{/{Address}}} found for aircraft {{{AircraftName}}}. Skipping...",
+                            control.Identifier, aircraftConfig.AircraftName);
+                        _badAddresses.Add(control.Identifier);
+                        continue;
+                    }
+
                     var controlBiosInputInfo = new BiosInputInfo(control.Inputs);
 
                     if (!aircraftBiosInputs.TryAdd(control.Identifier, controlBiosInputInfo))
                     {
-                        _log.LogWarning($"Duplicate key {{{control.Identifier}}} found for aircraft {{{aircraftConfig.AircraftName}}}. Skipping...");
+                        _log.LogWarning("Duplicate key {{{Address}}} found for aircraft {{{AircraftName}}}. Skipping...",
+                            control.Identifier, aircraftConfig.AircraftName);
                     }
                 }
 
@@ -93,7 +104,7 @@ namespace TouchDcsWorker
             // remove the leading slash from the address
             address = address.TrimStart('/');
 
-            _log.LogDebug($"processing OSC data {{{address} {data}}}");
+            _log.LogDebug("processing OSC data {{{Address} {Data}}}", address, data);
 
             // FromBios will set the active aircraft.
             // check to see if this is an aircraft input
@@ -102,7 +113,7 @@ namespace TouchDcsWorker
                 // if not, maybe it's a module input?
                 if (!_allModuleBiosInputs.TryGetValue(address, out inputInfo))
                 {
-                    _log.LogWarning($"Unable to find matching DCS-BIOS command for {address} in aircraft {_activeAircraft}");
+                    _log.LogWarning("Unable to find matching DCS-BIOS command for {Address} in aircraft {ActiveAircraft}", address, _activeAircraft);
                     return;
                 }
             }
@@ -122,7 +133,7 @@ namespace TouchDcsWorker
                     stringData = s;
                     break;
                 default:
-                    _log.LogError($"unable to convert data {{{data}}} to to any known type.");
+                    _log.LogError("unable to convert data {{{Data}}} to to any known type", data);
                     return;
             }
 
@@ -150,7 +161,7 @@ namespace TouchDcsWorker
                     if (stringData == InputFixedStep.Increment) stringPositive = true;
                     else if (stringData != InputFixedStep.Decrement)
                     {
-                        _log.LogError($"Unrecognized string value {stringData} for {address}");
+                        _log.LogError("Unrecognized string value {StringData} for {Address}", stringData, address);
                     }
                 }
 
@@ -160,7 +171,7 @@ namespace TouchDcsWorker
             }
             else
             {
-                _log.LogError($"input type {{set_state}} not found for control {address}");
+                _log.LogError("input type {{set_state}} not found for control {Address}", address);
             }
         }
 
@@ -182,9 +193,20 @@ namespace TouchDcsWorker
                 return;
             }
 
+            var oscAddress = $"/{biosCode}";
+
             foreach (var sendClient in _oscSenders.Values)
             {
-                sendClient.Send($"/{biosCode}", data);
+                if (_badAddresses.Contains(biosCode)) continue;
+
+                var success = sendClient.Send(oscAddress, data);
+
+                if (!success && !oscAddress.IsValidOscAddress())
+                {
+                    // stop trying to send - it's just not going to work.
+                    _badAddresses.Add(biosCode);
+                    break;
+                }
             }
         }
 
