@@ -18,6 +18,8 @@ namespace TouchDcsWorker
 
         private string? _activeAircraft;
 
+        private readonly IReadOnlySet<string> _nonAircraftModules;
+
         private readonly ILogger<BiosOscTranslator> _log;
 
         /// <summary>
@@ -36,7 +38,7 @@ namespace TouchDcsWorker
         /// </summary>
         private readonly Dictionary<string, BiosCodeInfo<BiosInput>> _allAircraftBiosInputs = new();
 
-        private readonly Dictionary<string, string> _aircraftAliases = new();
+        private readonly Dictionary<string, HashSet<string>> _aircraftAliases = new();
 
         private readonly HashSet<string> _badAddresses = new();
 
@@ -44,24 +46,24 @@ namespace TouchDcsWorker
 
         public BiosOscTranslator(in List<IOscSendClient> oscSenders, in IBiosSendClient biosSender,
             IEnumerable<AircraftBiosConfiguration> biosConfigs, in HashSet<string> nonAircraftModules,
-            in Dictionary<string, HashSet<string>>? aliases, in ILogger<BiosOscTranslator> logger)
+            in ILogger<BiosOscTranslator> logger)
         {
             _oscSenders = oscSenders.ToDictionary(s => s.DeviceIpAddress, s => s);
             _biosSender = biosSender;
-            if (aliases != null)
-            {
-                foreach (var (baseAircraft, aircraftAliases) in aliases)
-                {
-                    foreach (var alias in aircraftAliases)
-                    {
-                        _aircraftAliases[alias] = baseAircraft;
-                    }
-                }
-            }
+            _nonAircraftModules = nonAircraftModules;
             _log = logger;
 
             foreach (var aircraftConfig in biosConfigs)
             {
+                foreach (var alias in aircraftConfig.Aliases)
+                {
+                    if (!_aircraftAliases.ContainsKey(alias))
+                    {
+                        _aircraftAliases[alias] = new HashSet<string>();
+                    }
+                    _aircraftAliases[alias].Add(aircraftConfig.AircraftName);
+                }
+
                 var aircraftBiosInputs = new BiosCodeInfo<BiosInput>();
 
                 foreach (var control in aircraftConfig.Values.SelectMany(category => category.Values))
@@ -188,7 +190,7 @@ namespace TouchDcsWorker
             {
                 // if we are sending "NONE", then we don't currently have an aircraft.
                 _activeAircraft = aircraftName == NoneAircraft ? null :
-                    _aircraftAliases.TryGetValue(aircraftName, out var alias) ? alias : aircraftName;
+                    _aircraftAliases.TryGetValue(aircraftName, out var alias) ? alias.Except(_nonAircraftModules).First() : aircraftName;
 
                 return;
             }

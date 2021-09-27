@@ -30,10 +30,11 @@ namespace TouchDcsWorker
             var oscSenders = SetUpOscSenders(appConfig, loggerFactory);
             var biosUdpClient = SetUpBiosUdpClient(appConfig, loggerFactory.CreateLogger<BiosUdpClient>());
 
-            var aircraftBiosConfigs = await AircraftBiosConfiguration.AllConfigurations(appConfig.DcsBios.ConfigLocations.ToArray());
+            var aircraftBiosConfigs = await AircraftBiosConfiguration.AllConfigurations(appConfig.DcsBios.AliasFileName,
+                loggerFactory.CreateLogger<AircraftBiosConfiguration>(), appConfig.DcsBios.ConfigLocations.ToArray());
 
             var translator = new BiosOscTranslator(oscSenders.ToList(), biosUdpClient, aircraftBiosConfigs,
-                appConfig.CommonModules ?? new HashSet<string>(), appConfig.Aliases, loggerFactory.CreateLogger<BiosOscTranslator>());
+                appConfig.CommonModules ?? new HashSet<string>(), loggerFactory.CreateLogger<BiosOscTranslator>());
 
             var biosListener = new BiosListener(biosUdpClient, translator, loggerFactory.CreateLogger<BiosListener>());
             foreach (var config in aircraftBiosConfigs)
