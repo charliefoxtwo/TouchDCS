@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using TouchDcsWorker;
 
@@ -8,9 +9,13 @@ namespace TouchDcsConsole
     {
         public static async Task Main(string[] args)
         {
-            var loggerFactory = LoggerFactory.Create(b => b.SetMinimumLevel(LogLevel.Information).AddConsole());
-
-            await Worker.Run(loggerFactory);
+            await Worker.Run((b, logLevel) => b.SetMinimumLevel(logLevel).AddConsole().AddFile(string.Empty,
+                options =>
+                {
+                    options.MinLevel = logLevel;
+                    var fileName = $"log/TouchDCS_{DateTime.Now:yyyy-MM-ddTHHmmss}.log";
+                    options.FormatLogFileName = _ => fileName;
+                }));
         }
     }
 }

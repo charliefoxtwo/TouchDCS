@@ -13,19 +13,24 @@ namespace TouchDcsWorker
     // ReSharper disable once ClassNeverInstantiated.Global
     public class Worker
     {
-        public static async Task Run(ILoggerFactory loggerFactory)
+        public delegate ILoggingBuilder LoggingBuilder(ILoggingBuilder builder, LogLevel logLevel);
+
+        public static async Task Run(LoggingBuilder loggingBuilder)
         {
             var appConfig = ApplicationConfiguration.Get();
-            var log = loggerFactory.CreateLogger<Worker>();
 
             if (appConfig is null)
             {
-                log.LogWarning("No configuration detected; creating default config.json");
+                var emergencyLogger = LoggerFactory.Create(b => loggingBuilder(b, LogLevel.Information)).CreateLogger<Worker>();
+                emergencyLogger.LogWarning("No configuration detected; creating default config.json");
                 ApplicationConfiguration.CreateNewConfiguration();
-                log.LogInformation("Edit osc.configLocations and osc.devices in accordance with your setup, and then restart TouchDCS");
+                emergencyLogger.LogInformation("Edit osc.configLocations and osc.devices in accordance with your setup, and then restart TouchDCS");
                 Console.ReadKey(true);
                 return;
             }
+
+            var loggerFactory = LoggerFactory.Create(b => loggingBuilder(b, appConfig.LogLevel));
+            var log = loggerFactory.CreateLogger<Worker>();
 
             var oscSenders = SetUpOscSenders(appConfig, loggerFactory);
             var biosUdpClient = SetUpBiosUdpClient(appConfig, loggerFactory.CreateLogger<BiosUdpClient>());
