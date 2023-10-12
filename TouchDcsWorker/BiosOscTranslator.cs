@@ -144,6 +144,8 @@ namespace TouchDcsWorker
             var setStateInput = inputs.OfType<InputSetState>().FirstOrDefault();
             var fixedStepInput = inputs.OfType<InputFixedStep>().FirstOrDefault();
             var variableStepInput = inputs.OfType<InputVariableStep>().FirstOrDefault();
+            var actionInput = inputs.OfType<InputAction>().FirstOrDefault();
+            var setStringInput = inputs.OfType<InputSetString>().FirstOrDefault();
             if (setStateInput != null && floatData.HasValue)
             {
                 _biosSender.Send(address, floatData.Value.ToString());
@@ -171,9 +173,13 @@ namespace TouchDcsWorker
                 var stringifiedAmount = $"{(amount < 0 ? string.Empty : "+")}{amount}";
                 _biosSender.Send(address, stringifiedAmount);
             }
+            else if ((actionInput is not null || setStringInput is not null) && stringData is not null)
+            {
+                _biosSender.Send(address, stringData);
+            }
             else
             {
-                _log.LogError("input type {{set_state}} not found for control {Address}", address);
+                _log.LogError("no supported input found for control {Address}", address);
             }
         }
 

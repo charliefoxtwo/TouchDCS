@@ -124,6 +124,25 @@
                     "type":"integer"
                 }
             ]
+        },
+        "SetStringInput":{
+            "category":"Button",
+            "control_type":"radio",
+            "description":"UHF Radio Frequency",
+            "identifier":"SetStringInput",
+            "inputs":[
+                {
+                    "description":"Set the frequency of the radio",
+                    "interface":"set_string"
+                }
+            ],
+            "outputs":[
+                {
+                    "description":"Get the frequency of the radio",
+                    "max_length":7,
+                    "type":"string"
+                }
+            ]
         }
     }
 }
