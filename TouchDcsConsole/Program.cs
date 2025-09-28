@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using NReco.Logging.File;
 using TouchDcsWorker;
 
 namespace TouchDcsConsole
