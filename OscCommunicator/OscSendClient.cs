@@ -13,7 +13,8 @@ namespace OscCommunicator
 
         public OscSendClient(in IPAddress deviceIpAddress, in int sendPort, in ILogger logger)
         {
-            _sender = new OscSender(deviceIpAddress, sendPort);
+            // Dynamically binds a local port when creating a sender, preventing port conflicts when OSC applications (e.g., OpenStageControl) and TouchDCS run on the same PC.
+            _sender = new OscSender(deviceIpAddress, 0, sendPort);
             _log = logger;
             DeviceIpAddress = deviceIpAddress.ToString();
         }
